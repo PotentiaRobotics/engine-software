@@ -1,0 +1,86 @@
+#VRML_SIM R2021a utf8
+WorldInfo {
+  coordinateSystem "NUE"
+}
+Viewpoint {
+  orientation -0.6317508657596447 0.7640332861949025 0.13093502662831516 0.4783818664153489
+  position 0.8859297766753556 2.1334347652363816 2.270266388485401
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  floorSize 5 5
+}
+Robot {
+  children [
+    DEF Body Transform {
+      translation 0 1.3 0
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.5 0.7 0.25
+          }
+        }
+      ]
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        anchor -0.25 1.55 0
+      }
+      device [
+        RotationalMotor {
+          name "arm_pitch"
+        }
+      ]
+      endPoint Solid {
+        translation -0.25 1.55 0
+        rotation 0 0 1 1.57
+        children [
+          DEF arm_joint Shape {
+            appearance PBRAppearance {
+              roughness 1
+              metalness 0
+            }
+            geometry Cylinder {
+              height 0.1
+              radius 0.075
+            }
+          }
+        ]
+        boundingObject USE arm_joint
+        physics Physics {
+        }
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        anchor -0.375 1.55 0
+      }
+      device [
+        RotationalMotor {
+          name "arm_yaw"
+        }
+      ]
+      endPoint Solid {
+        translation -0.375 1.55 0
+        rotation 1 0 0 1.57
+        children [
+          USE arm_joint
+        ]
+        name "solid(1)"
+        boundingObject USE arm_joint
+        physics Physics {
+        }
+      }
+    }
+  ]
+  boundingObject USE Body
+  physics Physics {
+  }
+}
