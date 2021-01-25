@@ -3,8 +3,8 @@ WorldInfo {
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation -0.6317508657596447 0.7640332861949025 0.13093502662831516 0.4783818664153489
-  position 0.8859297766753556 2.1334347652363816 2.270266388485401
+  orientation -0.7623894855422976 0.6273329238621066 0.1587944425134923 0.327301231606098
+  position 1.0070228999748558 2.3086338771870616 3.1708017471662577
 }
 TexturedBackground {
 }
@@ -14,6 +14,7 @@ RectangleArena {
   floorSize 5 5
 }
 Robot {
+  translation 0 0.03 0
   children [
     DEF Body Transform {
       translation 0 1.3 0
@@ -28,6 +29,47 @@ Robot {
           }
         }
       ]
+    }
+    BallJoint {
+      jointParameters BallJointParameters {
+        anchor 0 1.77 0
+      }
+      jointParameters2 JointParameters {
+      }
+      jointParameters3 JointParameters {
+      }
+      device [
+        RotationalMotor {
+          name "neck_pitch"
+        }
+      ]
+      device2 [
+        RotationalMotor {
+          name "neck_yaw"
+          minPosition -1.5707963267948966
+          maxPosition 1.5707963267948966
+        }
+      ]
+      device3 [
+        RotationalMotor {
+          name "neck_roll"
+        }
+      ]
+      endPoint Solid {
+        translation 0 1.77 0
+        children [
+          Shape {
+            appearance PBRAppearance {
+              roughness 1
+            }
+            geometry Cylinder {
+              height 0.25
+              radius 0.2
+            }
+          }
+        ]
+        name "solid(2)"
+      }
     }
     HingeJoint {
       jointParameters HingeJointParameters {
