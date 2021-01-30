@@ -122,6 +122,52 @@ Robot {
         }
       }
     }
+    BallJoint {
+      jointParameters BallJointParameters {
+        anchor 0.33 1.6 0
+      }
+      jointParameters2 JointParameters {
+      }
+      jointParameters3 JointParameters {
+        axis 1 0 0
+      }
+      device [
+        RotationalMotor {
+          name "right_shoulder_roll"
+        }
+      ]
+      device2 [
+        RotationalMotor {
+          name "right_shoulder_yaw"
+          minPosition -1.5707963267948966
+          maxPosition 1.5707963267948966
+        }
+      ]
+      device3 [
+        RotationalMotor {
+          name "right_shoulder_pitch"
+        }
+      ]
+      endPoint Solid {
+        translation 0.33 1.37 0
+        children [
+          DEF right_shoulder Shape {
+            appearance PBRAppearance {
+              roughness 1
+              metalness 0
+            }
+            geometry Capsule {
+              height 0.35
+              radius 0.075
+            }
+          }
+        ]
+        name "solid(1)"
+        boundingObject USE right_shoulder
+        physics Physics {
+        }
+      }
+    }
   ]
   boundingObject USE Body
   physics Physics {

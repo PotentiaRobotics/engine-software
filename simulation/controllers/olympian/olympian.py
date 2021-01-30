@@ -34,9 +34,9 @@ def main():
         else:
             pos -= 0.2
             
-        if pos >= 3:
+        if pos >= 6:
             add = False
-        elif pos <= -3:
+        elif pos <= -6:
             add = True
     
     # Enter here exit cleanup code.
