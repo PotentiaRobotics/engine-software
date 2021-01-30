@@ -3,8 +3,8 @@ WorldInfo {
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation -0.9447688433364667 0.30168245796522575 0.12806063882682472 0.3152849474881078
-  position 0.2197976877928071 1.8786536179181716 2.8466989121991344
+  orientation -0.7707051565946416 0.5749837457788743 0.2746038122250384 0.10201305223849001
+  position 0.17553049541245647 1.56726630970089 2.900501446043397
 }
 TexturedBackground {
 }
@@ -32,7 +32,7 @@ Robot {
     }
     BallJoint {
       jointParameters BallJointParameters {
-        anchor -0.325 1.55 0
+        anchor -0.33 1.55 0
       }
       jointParameters2 JointParameters {
       }
@@ -41,23 +41,24 @@ Robot {
       }
       device [
         RotationalMotor {
-          name "shoulder_pitch"
+          name "shoulder_roll"
         }
       ]
       device2 [
         RotationalMotor {
-          name "shoulder_roll"
+          name "shoulder_yaw"
           minPosition -1.5707963267948966
           maxPosition 1.5707963267948966
         }
       ]
       device3 [
         RotationalMotor {
-          name "shoulder_yaw"
+          name "shoulder_pitch"
         }
       ]
       endPoint Solid {
-        translation -0.325 1.55 0
+        translation -0.33 1.55 0
+        rotation -7.180852017348988e-16 2.3056730324661623e-15 0.9999999999999999 0.34697753906142764
         children [
           DEF shoulder Shape {
             appearance PBRAppearance {
@@ -76,7 +77,7 @@ Robot {
     }
     BallJoint {
       jointParameters BallJointParameters {
-        anchor 0 1.775 0
+        anchor 0 1.78 0
       }
       jointParameters2 JointParameters {
         axis 1 0 0
@@ -101,8 +102,8 @@ Robot {
         }
       ]
       endPoint Solid {
-        translation 0 1.775 0
-        rotation 0.9999999999999999 3.671812525079458e-10 1.9040221549379054e-10 5.326429205090855
+        translation 2.498805482365059e-25 1.775 1.6655908016964734e-18
+        rotation 0.999999999999905 -3.872645888957525e-07 -2.0081645019838704e-07 5.326429205090776
         children [
           DEF head Shape {
             appearance PBRAppearance {

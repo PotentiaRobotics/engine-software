@@ -10,9 +10,10 @@ def main():
     print("Initializing world...")
     robot = Robot()
     
-    head_motor = robot.getDevice("shoulder_pitch")
-    head_motor.setVelocity(0.5)
+    head_motor = robot.getDevice("shoulder_yaw")
+    head_motor.setVelocity(2)
     pos = 0
+    add = True
     
     # get the time step of the current world.
     timestep = int(robot.getBasicTimeStep())
@@ -22,7 +23,15 @@ def main():
     while robot.step(timestep) != -1:
         head_motor.setPosition(pos)
         
-        pos += 3.141
+        if add:
+            pos += 0.2
+        else:
+            pos -= 0.2
+            
+        if pos >= 3:
+            add = False
+        elif pos <= -3:
+            add = True
     
     # Enter here exit cleanup code.
     
