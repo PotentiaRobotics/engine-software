@@ -10,8 +10,9 @@ def main():
     print("Initializing world...")
     robot = Robot()
     
-    head_motor = robot.getDevice("neck_pitch")
-    head_motor.setVelocity(1)
+    head_motor = robot.getDevice("shoulder_pitch")
+    head_motor.setVelocity(0.5)
+    pos = 0
     
     # get the time step of the current world.
     timestep = int(robot.getBasicTimeStep())
@@ -19,7 +20,9 @@ def main():
     # Main loop:
     # - perform simulation steps until Webots is stopping the controller
     while robot.step(timestep) != -1:
-        head_motor.setPosition(6)
+        head_motor.setPosition(pos)
+        
+        pos += 3.141
     
     # Enter here exit cleanup code.
     

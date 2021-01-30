@@ -3,8 +3,8 @@ WorldInfo {
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation -0.7241113403564003 0.6708542148873753 0.16005433182235554 0.3286771770738909
-  position 0.9187932527597619 1.807787251982618 3.3212186235849788
+  orientation -0.9447688433364667 0.30168245796522575 0.12806063882682472 0.3152849474881078
+  position 0.2197976877928071 1.8786536179181716 2.8466989121991344
 }
 TexturedBackground {
 }
@@ -29,6 +29,50 @@ Robot {
           }
         }
       ]
+    }
+    BallJoint {
+      jointParameters BallJointParameters {
+        anchor -0.325 1.55 0
+      }
+      jointParameters2 JointParameters {
+      }
+      jointParameters3 JointParameters {
+        axis 1 0 0
+      }
+      device [
+        RotationalMotor {
+          name "shoulder_pitch"
+        }
+      ]
+      device2 [
+        RotationalMotor {
+          name "shoulder_roll"
+          minPosition -1.5707963267948966
+          maxPosition 1.5707963267948966
+        }
+      ]
+      device3 [
+        RotationalMotor {
+          name "shoulder_yaw"
+        }
+      ]
+      endPoint Solid {
+        translation -0.325 1.55 0
+        children [
+          DEF shoulder Shape {
+            appearance PBRAppearance {
+              roughness 1
+              metalness 0
+            }
+            geometry Sphere {
+              radius 0.075
+            }
+          }
+        ]
+        boundingObject USE shoulder
+        physics Physics {
+        }
+      }
     }
     BallJoint {
       jointParameters BallJointParameters {
@@ -58,6 +102,7 @@ Robot {
       ]
       endPoint Solid {
         translation 0 1.775 0
+        rotation 0.9999999999999999 3.671812525079458e-10 1.9040221549379054e-10 5.326429205090855
         children [
           DEF head Shape {
             appearance PBRAppearance {
@@ -71,57 +116,6 @@ Robot {
         ]
         name "solid(2)"
         boundingObject USE head
-        physics Physics {
-        }
-      }
-    }
-    HingeJoint {
-      jointParameters HingeJointParameters {
-        anchor -0.25 1.55 0
-      }
-      device [
-        RotationalMotor {
-          name "arm_pitch"
-        }
-      ]
-      endPoint Solid {
-        translation -0.25 1.55 0
-        rotation 0 0 1 1.57
-        children [
-          DEF arm_joint Shape {
-            appearance PBRAppearance {
-              roughness 1
-              metalness 0
-            }
-            geometry Cylinder {
-              height 0.1
-              radius 0.075
-            }
-          }
-        ]
-        boundingObject USE arm_joint
-        physics Physics {
-        }
-      }
-    }
-    HingeJoint {
-      jointParameters HingeJointParameters {
-        axis 0 0 1
-        anchor -0.375 1.55 0
-      }
-      device [
-        RotationalMotor {
-          name "arm_yaw"
-        }
-      ]
-      endPoint Solid {
-        translation -0.375 1.55 0
-        rotation 1 0 0 1.57
-        children [
-          USE arm_joint
-        ]
-        name "solid(1)"
-        boundingObject USE arm_joint
         physics Physics {
         }
       }
