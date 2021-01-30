@@ -3,8 +3,8 @@ WorldInfo {
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation -0.7623894855422976 0.6273329238621066 0.1587944425134923 0.327301231606098
-  position 1.0070228999748558 2.3086338771870616 3.1708017471662577
+  orientation -0.7241113403564003 0.6708542148873753 0.16005433182235554 0.3286771770738909
+  position 0.9187932527597619 1.807787251982618 3.3212186235849788
 }
 TexturedBackground {
 }
@@ -32,9 +32,10 @@ Robot {
     }
     BallJoint {
       jointParameters BallJointParameters {
-        anchor 0 1.77 0
+        anchor 0 1.775 0
       }
       jointParameters2 JointParameters {
+        axis 1 0 0
       }
       jointParameters3 JointParameters {
       }
@@ -56,19 +57,22 @@ Robot {
         }
       ]
       endPoint Solid {
-        translation 0 1.77 0
+        translation 0 1.775 0
         children [
-          Shape {
+          DEF head Shape {
             appearance PBRAppearance {
               roughness 1
+              metalness 0
             }
-            geometry Cylinder {
-              height 0.25
-              radius 0.2
+            geometry Sphere {
+              radius 0.125
             }
           }
         ]
         name "solid(2)"
+        boundingObject USE head
+        physics Physics {
+        }
       }
     }
     HingeJoint {
@@ -102,6 +106,7 @@ Robot {
     }
     HingeJoint {
       jointParameters HingeJointParameters {
+        axis 0 0 1
         anchor -0.375 1.55 0
       }
       device [
@@ -125,4 +130,5 @@ Robot {
   boundingObject USE Body
   physics Physics {
   }
+  controller "olympian"
 }
