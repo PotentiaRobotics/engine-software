@@ -3,8 +3,8 @@ WorldInfo {
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation -0.7707051565946416 0.5749837457788743 0.2746038122250384 0.10201305223849001
-  position 0.17553049541245647 1.56726630970089 2.900501446043397
+  orientation -0.8818525787650351 -0.3767457987150442 0.28354652612229425 0.08625071663475813
+  position -0.1906315418853935 1.7802839159550832 2.8464267843684885
 }
 TexturedBackground {
 }
@@ -32,7 +32,7 @@ Robot {
     }
     BallJoint {
       jointParameters BallJointParameters {
-        anchor -0.33 1.55 0
+        anchor -0.33 1.6 0
       }
       jointParameters2 JointParameters {
       }
@@ -57,15 +57,16 @@ Robot {
         }
       ]
       endPoint Solid {
-        translation -0.33 1.55 0
-        rotation -7.180852017348988e-16 2.3056730324661623e-15 0.9999999999999999 0.34697753906142764
+        translation -0.330806 1.37 -2.28548e-05
+        rotation 0.0008954593566532848 0.9999525246665688 -0.009702915309103947 0.12741759639284905
         children [
           DEF shoulder Shape {
             appearance PBRAppearance {
               roughness 1
               metalness 0
             }
-            geometry Sphere {
+            geometry Capsule {
+              height 0.35
               radius 0.075
             }
           }
@@ -102,8 +103,8 @@ Robot {
         }
       ]
       endPoint Solid {
-        translation 2.498805482365059e-25 1.775 1.6655908016964734e-18
-        rotation 0.999999999999905 -3.872645888957525e-07 -2.0081645019838704e-07 5.326429205090776
+        translation 1.5688930727008528e-10 1.775023867890655 0.000487964374053785
+        rotation 0.9999999999997564 -6.209227482014029e-07 -3.186911752856171e-07 5.228680744087191
         children [
           DEF head Shape {
             appearance PBRAppearance {
