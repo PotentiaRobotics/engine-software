@@ -10,14 +10,14 @@ def main():
     print("Initializing world...")
     robot = Robot()
     
-    head_motor = robot.getDevice("shoulder_pitch")
-    motor2 = robot.getDevice("shoulder_roll")
+    head_motor = robot.getDevice("torso_yaw")
+    motor2 = robot.getDevice("right_elbow_pitch")
     motor3 = robot.getDevice("shoulder_yaw")
-    head_motor.setVelocity(1)
-    motor2.setVelocity(1)
+    head_motor.setVelocity(0.3)
+    motor2.setVelocity(9)
     motor3.setVelocity(1)
     pos = 0
-    add = True
+    add = False
     
     # get the time step of the current world.
     timestep = int(robot.getBasicTimeStep())
