@@ -3,8 +3,8 @@ WorldInfo {
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation -0.7707051565946416 0.5749837457788743 0.2746038122250384 0.10201305223849001
-  position 0.17553049541245647 1.56726630970089 2.900501446043397
+  orientation -0.9813700309948942 0.19129400760775186 -0.017873581578575073 0.13058708003813205
+  position -0.03208588854364594 1.3324969290146145 4.187568303045968
 }
 TexturedBackground {
 }
@@ -17,7 +17,7 @@ Robot {
   translation 0 0.03 0
   children [
     DEF Body Transform {
-      translation 0 1.3 0
+      translation 0 1.05 0
       children [
         Shape {
           appearance PBRAppearance {
@@ -25,59 +25,14 @@ Robot {
             metalness 0
           }
           geometry Box {
-            size 0.5 0.7 0.25
+            size 0.2 0.2 0.25
           }
         }
       ]
     }
     BallJoint {
       jointParameters BallJointParameters {
-        anchor -0.33 1.55 0
-      }
-      jointParameters2 JointParameters {
-      }
-      jointParameters3 JointParameters {
-        axis 1 0 0
-      }
-      device [
-        RotationalMotor {
-          name "shoulder_roll"
-        }
-      ]
-      device2 [
-        RotationalMotor {
-          name "shoulder_yaw"
-          minPosition -1.5707963267948966
-          maxPosition 1.5707963267948966
-        }
-      ]
-      device3 [
-        RotationalMotor {
-          name "shoulder_pitch"
-        }
-      ]
-      endPoint Solid {
-        translation -0.33 1.55 0
-        rotation -7.180852017348988e-16 2.3056730324661623e-15 0.9999999999999999 0.34697753906142764
-        children [
-          DEF shoulder Shape {
-            appearance PBRAppearance {
-              roughness 1
-              metalness 0
-            }
-            geometry Sphere {
-              radius 0.075
-            }
-          }
-        ]
-        boundingObject USE shoulder
-        physics Physics {
-        }
-      }
-    }
-    BallJoint {
-      jointParameters BallJointParameters {
-        anchor 0 1.78 0
+        anchor 0 1.15 0
       }
       jointParameters2 JointParameters {
         axis 1 0 0
@@ -86,37 +41,231 @@ Robot {
       }
       device [
         RotationalMotor {
-          name "neck_pitch"
+          name "torso_pitch"
         }
       ]
       device2 [
         RotationalMotor {
-          name "neck_yaw"
+          name "torso_yaw"
           minPosition -1.5707963267948966
           maxPosition 1.5707963267948966
         }
       ]
       device3 [
         RotationalMotor {
-          name "neck_roll"
+          name "torso_roll"
         }
       ]
       endPoint Solid {
-        translation 2.498805482365059e-25 1.775 1.6655908016964734e-18
-        rotation 0.999999999999905 -3.872645888957525e-07 -2.0081645019838704e-07 5.326429205090776
+        translation 0 1.51 0
+        rotation 1 0 0 0
         children [
-          DEF head Shape {
+          DEF torso Shape {
             appearance PBRAppearance {
               roughness 1
               metalness 0
             }
-            geometry Sphere {
-              radius 0.125
+            geometry Box {
+              size 0.5 0.7 0.25
+            }
+          }
+          BallJoint {
+            jointParameters BallJointParameters {
+              anchor -0.33 0.25 0
+            }
+            jointParameters2 JointParameters {
+            }
+            jointParameters3 JointParameters {
+              axis 1 0 0
+            }
+            device [
+              RotationalMotor {
+                name "shoulder_roll"
+              }
+            ]
+            device2 [
+              RotationalMotor {
+                name "shoulder_yaw"
+                minPosition -1.5707963267948966
+                maxPosition 1.5707963267948966
+              }
+            ]
+            device3 [
+              RotationalMotor {
+                name "shoulder_pitch"
+              }
+            ]
+            endPoint Solid {
+              translation -0.330806 0.1 -2.28548e-05
+              rotation 0.0008954593566532848 0.9999525246665688 -0.009702915309103947 0.12741759639284905
+              children [
+                HingeJoint {
+                  jointParameters HingeJointParameters {
+                  }
+                  device [
+                    RotationalMotor {
+                      name "elbow_pitch"
+                    }
+                  ]
+                  endPoint Solid {
+                    translation 0 -0.42499999999726895 -1.5235950555825944e-06
+                    rotation 0.9999999999999999 0 0 3.5849604925388305e-06
+                    children [
+                      DEF elbow Shape {
+                        appearance PBRAppearance {
+                          roughness 1
+                          metalness 0
+                        }
+                        geometry Capsule {
+                          height 0.25
+                          radius 0.075
+                        }
+                      }
+                    ]
+                    boundingObject USE elbow
+                    physics Physics {
+                    }
+                  }
+                }
+                DEF shoulder Shape {
+                  appearance PBRAppearance {
+                    roughness 1
+                    metalness 0
+                  }
+                  geometry Capsule {
+                    height 0.3
+                    radius 0.075
+                  }
+                }
+              ]
+              boundingObject USE shoulder
+              physics Physics {
+              }
+            }
+          }
+          BallJoint {
+            jointParameters BallJointParameters {
+              anchor 0 0.48 0
+            }
+            jointParameters2 JointParameters {
+              axis 1 0 0
+            }
+            jointParameters3 JointParameters {
+            }
+            device [
+              RotationalMotor {
+                name "neck_pitch"
+              }
+            ]
+            device2 [
+              RotationalMotor {
+                name "neck_yaw"
+                minPosition -1.5707963267948966
+                maxPosition 1.5707963267948966
+              }
+            ]
+            device3 [
+              RotationalMotor {
+                name "neck_roll"
+              }
+            ]
+            endPoint Solid {
+              translation 1.56889e-10 0.48 0.000487964
+              rotation 0.9999999999997564 -6.209227482014029e-07 -3.186911752856171e-07 5.228680744087191
+              children [
+                DEF head Shape {
+                  appearance PBRAppearance {
+                    roughness 1
+                    metalness 0
+                  }
+                  geometry Sphere {
+                    radius 0.125
+                  }
+                }
+              ]
+              name "solid(2)"
+              boundingObject USE head
+              physics Physics {
+              }
+            }
+          }
+          BallJoint {
+            jointParameters BallJointParameters {
+              anchor 0.33 0.25 0
+            }
+            jointParameters2 JointParameters {
+            }
+            jointParameters3 JointParameters {
+              axis 1 0 0
+            }
+            device [
+              RotationalMotor {
+                name "right_shoulder_roll"
+              }
+            ]
+            device2 [
+              RotationalMotor {
+                name "right_shoulder_yaw"
+                minPosition -1.5707963267948966
+                maxPosition 1.5707963267948966
+              }
+            ]
+            device3 [
+              RotationalMotor {
+                name "right_shoulder_pitch"
+              }
+            ]
+            endPoint Solid {
+              translation 0.33 0.1 0
+              children [
+                HingeJoint {
+                  jointParameters HingeJointParameters {
+                  }
+                  device [
+                    RotationalMotor {
+                      name "right_elbow_pitch"
+                    }
+                  ]
+                  endPoint Solid {
+                    translation 0 -0.42499999999726895 -1.5235950555825944e-06
+                    rotation 0.9999999999999999 0 0 3.5849604925388305e-06
+                    children [
+                      DEF right_elbow Shape {
+                        appearance PBRAppearance {
+                          roughness 1
+                          metalness 0
+                        }
+                        geometry Capsule {
+                          height 0.25
+                          radius 0.075
+                        }
+                      }
+                    ]
+                    boundingObject USE right_elbow
+                    physics Physics {
+                    }
+                  }
+                }
+                DEF right_shoulder Shape {
+                  appearance PBRAppearance {
+                    roughness 1
+                    metalness 0
+                  }
+                  geometry Capsule {
+                    height 0.3
+                    radius 0.075
+                  }
+                }
+              ]
+              name "solid(1)"
+              boundingObject USE right_shoulder
+              physics Physics {
+              }
             }
           }
         ]
         name "solid(2)"
-        boundingObject USE head
+        boundingObject USE torso
         physics Physics {
         }
       }
