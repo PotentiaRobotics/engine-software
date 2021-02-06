@@ -14,7 +14,7 @@ def derivative(error, priorError):
 
 def actuatorMovement(robot, pidOutput):
   #Inverse Kinematic Equation
-  continue
+  return
 
 def controllerPID(robot, error, priorError, priorIntegral):
   # Constant values we change to try to optimize
@@ -56,8 +56,9 @@ def calculateZMP(gyro, accel):
 
   return xObs, yObs
 
+# Might have to actually code this later
 def calculateCOM(robot):
-  continue
+  return
 
 def main():
   print("Initializing Olympiad...")
