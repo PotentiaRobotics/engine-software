@@ -3,8 +3,8 @@ WorldInfo {
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation -0.9813700309948942 0.19129400760775186 -0.017873581578575073 0.13058708003813205
-  position -0.03208588854364594 1.3324969290146145 4.187568303045968
+  orientation 0.1667677765231006 -0.9859728993943109 0.006778670483028679 0.08240461746309974
+  position -0.11229290729588565 0.9987161303730752 4.757655782188762
 }
 TexturedBackground {
 }
@@ -29,6 +29,59 @@ Robot {
           }
         }
       ]
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        anchor 0.17 0.79 0
+      }
+      device [
+        RotationalMotor {
+        }
+      ]
+      endPoint Solid {
+        translation 0.17 0.79 0
+        rotation -1 0 0 1.8916846600245166e-06
+        children [
+          DEF upperLeftLeg Shape {
+            appearance PBRAppearance {
+            }
+            geometry Capsule {
+              height 0.45
+              radius 0.06
+            }
+          }
+        ]
+        boundingObject USE upperLeftLeg
+        physics Physics {
+        }
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        anchor -0.17 0.79 0
+      }
+      device [
+        RotationalMotor {
+        }
+      ]
+      endPoint Solid {
+        translation -0.17 0.79 0
+        rotation 1 0 0 0
+        children [
+          DEF upperRightLeg Shape {
+            appearance PBRAppearance {
+            }
+            geometry Capsule {
+              height 0.45
+              radius 0.06
+            }
+          }
+        ]
+        name "upperRightLegMotor"
+        boundingObject USE upperRightLeg
+        physics Physics {
+        }
+      }
     }
     BallJoint {
       jointParameters BallJointParameters {
