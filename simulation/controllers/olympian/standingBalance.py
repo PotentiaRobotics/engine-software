@@ -5,12 +5,10 @@
 from controller import Robot, Accelerometer, Gyro
 
 def integral(error, priorIntegral):
-  global timestep
-  return priorIntegral + error * timestep
+  return priorIntegral + error * (TIMESTEP+1 - TIMESTEP)
 
 def derivative(error, priorError):
-  global timestep
-  return (error-priorError)/timestep
+  return (error-priorError)/(TIMESTEP+1 - TIMESTEP)
 
 def actuatorMovement(robot, pidOutput):
   #Inverse Kinematic Equation
@@ -24,18 +22,45 @@ def controllerPID(robot, error, priorError, priorIntegral):
   Kp = 1
   Ki = 0
   Kd = 0
-
   #Usually not needed, but just in case we ever need nonstop motion
   xBias = 0
   yBias = 0
 
-  derivativeX = derivative(error[0], priorError[0])
-  derivativeY = derivative(error[1], priorError[1])
+  nominalValue = 0.0
+  Kc = 1.0 # Kc is the controller gain
+  tauI = 0.0 # tauI is the reset time, which is a tuning param for integral
+  tauD = 0.0 # tauD is derivative time. Tuning param for derivative
+  maxMotor = 1.0 # How big the signal that goes to the actuator is
+  minMotor = 0.0 # How small the signal that goes to the actuator is
+  
   integralX = integral(error[0], priorIntegral[0])
   integralY = integral(error[1], priorIntegral[1])
+  
+  if(TIMESTEP >= 1):
+    derivativeX = derivative(error[0], priorError[0])
+    derivativeY = derivative(error[1], priorError[1])
+  else:
+    derivativeX = 0.0
+    derivativeY = 0.0
 
-  ux = Kp*error[0] + Ki * integralX + Kd * derivativeX + xBias
-  uy = Kp*error[1] + Ki * integralY + Kd * derivativeY + yBias
+
+  ux = nominalValue + Kc*error[0] + Kc/tauI * integralX + Kc * tauD * derivativeX
+  
+  if(ux > maxMotor):
+    ux = maxMotor
+    integralX = integralX - error[0]*(TIMESTEP+1 - TIMESTEP)
+  elif(ux < minMotor):
+    ux = minMotor
+    integralX = integralX - error[0]*(TIMESTEP+1 - TIMESTEP)
+  
+  uy = nominalValue + Kc*error[1] + Kc/tauI * integralY + Kc * tauD * derivativeY
+
+  if(uy > maxMotor):
+    uy = maxMotor
+    integralY = integralY - error[1]*(TIMESTEP+1 - TIMESTEP)
+  elif(ux < minMotor):
+    uy = minMotor
+    integralY = integralY - error[1]*(TIMESTEP+1 - TIMESTEP)
 
   priorError = error
   priorIntegral = [integralX, integralY]
@@ -65,8 +90,8 @@ def main():
   robot = Robot()
   
   # get the time step of the current world.
-  global timestep
-  timestep = int(robot.getBasicTimeStep())
+  global TIMESTEP
+  TIMESTEP = int(robot.getBasicTimeStep())
   
   # gyroscope, accelorometer
   gyro = robot.getDevice("gyro.wbt name")
@@ -84,7 +109,7 @@ def main():
   priorError = [0,0]
   priorIntegral = [0, 0]
 
-  while robot.step(timestep) != -1:
+  while robot.step(TIMESTEP) != -1:
     xObs, yObs = calculateZMP(gyro, accel)
     error = [desiredXZMP-xObs, desiredYZMP-yObs]
     controllerPID(robot, error, priorError, priorIntegral)
