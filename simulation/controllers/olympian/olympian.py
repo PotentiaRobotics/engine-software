@@ -11,11 +11,11 @@ def main():
     robot = Robot()
     
     head_motor = robot.getDevice("torso_yaw")
-    motor2 = robot.getDevice("right_elbow_pitch")
-    motor3 = robot.getDevice("shoulder_yaw")
-    head_motor.setVelocity(0.3)
+    motor2 = robot.getDevice("right_hip_pitch")
+    motor3 = robot.getDevice("right_knee_pitch")
+    head_motor.setVelocity(1)
     motor2.setVelocity(9)
-    motor3.setVelocity(1)
+    motor3.setVelocity(9)
     pos = 0
     add = False
     
@@ -27,16 +27,17 @@ def main():
     while robot.step(timestep) != -1:
         head_motor.setPosition(pos)
         # motor2.setPosition(pos)
-        # motor3.setPosition(pos)
+        # motor2.setPosition(pos)
+        # motor3.setPosition(-pos)
         
         if add:
             pos += 0.2
         else:
             pos -= 0.2
             
-        if pos >= 6:
+        if pos >= 1.4:
             add = False
-        elif pos <= -6:
+        elif pos <= -1.4:
             add = True
     
     # Enter here exit cleanup code.
