@@ -83,7 +83,48 @@ def calculateZMP(gyro, accel):
 
 # Might have to actually code this later
 def calculateCOM(robot):
-  return
+  # links needed to calculate COM
+  torso = robot.getDevice("torsoMotor")
+  upperLeftLeg= robot.getDevice("upperLeftLegMotor")
+  upperRightLeg = robot.getDevice("upperRightLegMotor")
+
+  links = [torso, upperLeftLeg, upperRightLeg] # additional links will be added, when they're made
+
+  totalMass = len(links) # assumption that all links have mass of 1
+  centerOfMass = [0, 0, 0, 0]
+
+  for i in links: 
+
+    # instantiation of values
+    # need to add code to get joint angles
+    if i == torso:
+        r = 0.25
+        theta0 = 0
+        theta1 = 0
+    else:
+        r = 0.225
+        theta0 = 0
+        theta1 = 0
+    
+    # instantiation of matrices 
+    # assumption that all angle values are in degrees
+    transformationMatrixToLink = [[np.cos(theta0*np.pi/180), -np.sin(theta0*np.pi/180), 
+                                 0, 2r*np.cos(theta0*np.pi/180)], [np.sin(theta0*np.pi/180), 
+                                 np.cos(theta0*np.pi/180), 0, 2r*np.sin(theta0*np.pi/180)], 
+                                 [0, 0, 1, 0], [0, 0, 0, 1]]                       
+    vectorOfJointAngles = [2r*np.cos(theta1*np.pi/180), 2r*np.sin(theta1*np.pi/180), 0, 1]
+    transformationMatrixToLinkCOM = [[np.cos(theta1*np.pi/180), 0, -np.sin(theta1*np.pi/180), 
+                                    2r*np.cos(theta0*np.pi/180)], [0, 1, 0, 0], 
+                                    [np.sin(theta1*np.pi/180), 0, np.cos(theta1*np.pi/180), 
+                                    2r*np.sin(theta0*np.pi/180)], [0, 0, 0, 1]]
+    
+    # COM of each link is calculated forward kinematics equations                                
+    calc = transformationMatrixToLink.dot(vectorOfJointAngles).dot(transformationMatrixToLinkCOM)
+    
+    # COM of the entire rigid body is calculated using a weighted average
+    centerOfMass += (1/totalMass)*calc
+    
+  return centerOfMass[0], centerOfMass[1], centerOfMass[2]
 
 def main():
   print("Initializing Olympiad...")
