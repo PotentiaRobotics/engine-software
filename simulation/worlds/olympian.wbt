@@ -3,8 +3,8 @@ WorldInfo {
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation 0.1667677765231006 -0.9859728993943109 0.006778670483028679 0.08240461746309974
-  position -0.03424025306816622 1.0119404189473493 3.799122587140713
+  orientation -0.7235554390697962 0.681894820378785 0.10717733217942502 0.30559167713300855
+  position 0.708189244094154 1.579061816199336 3.4903595614267746
 }
 TexturedBackground {
 }
@@ -14,7 +14,7 @@ RectangleArena {
   floorSize 5 5
 }
 Robot {
-  translation 0 0.03 0
+  translation 0 -0.12 0
   children [
     DEF Body Transform {
       translation 0 1.05 0
@@ -30,16 +30,34 @@ Robot {
         }
       ]
     }
-    HingeJoint {
-      jointParameters HingeJointParameters {
-        anchor 0.185 0.79 0
+    BallJoint {
+      jointParameters BallJointParameters {
+        anchor 0.185 0.85 0
+      }
+      jointParameters2 JointParameters {
+        axis 1 0 0
+      }
+      jointParameters3 JointParameters {
       }
       device [
         RotationalMotor {
+          name "left_hip_pitch"
+        }
+      ]
+      device2 [
+        RotationalMotor {
+          name "left_hip_yaw"
+          minPosition -1.5707963267948966
+          maxPosition 1.5707963267948966
+        }
+      ]
+      device3 [
+        RotationalMotor {
+          name "left_hip_roll"
         }
       ]
       endPoint Solid {
-        translation 0.185 0.79 0
+        translation 0.185 0.85 0
         rotation -1 0 0 1.8916846600245166e-06
         children [
           DEF upperLeftLeg Shape {
@@ -48,8 +66,83 @@ Robot {
               metalness 0
             }
             geometry Capsule {
-              height 0.45
+              height 0.3
               radius 0.075
+            }
+          }
+          HingeJoint {
+            jointParameters HingeJointParameters {
+              anchor 0 -0.45 0
+            }
+            device [
+              RotationalMotor {
+                name "left_knee_pitch"
+              }
+            ]
+            endPoint Solid {
+              translation 0 -0.45 0
+              rotation 1 0 0 0
+              children [
+                DEF left_shin Shape {
+                  appearance PBRAppearance {
+                    roughness 1
+                    metalness 0
+                  }
+                  geometry Capsule {
+                    height 0.3
+                    radius 0.075
+                  }
+                }
+                BallJoint {
+                  jointParameters BallJointParameters {
+                    anchor 0 -0.25 0
+                  }
+                  jointParameters2 JointParameters {
+                  }
+                  jointParameters3 JointParameters {
+                    axis 1 0 0
+                  }
+                  device [
+                    RotationalMotor {
+                      name "left_foot_pitch"
+                      maxTorque 100
+                    }
+                  ]
+                  device2 [
+                    RotationalMotor {
+                      name "left_foot_yaw"
+                      minPosition -1.5707963267948966
+                      maxPosition 1.5707963267948966
+                    }
+                  ]
+                  device3 [
+                    RotationalMotor {
+                      name "left_foot_roll"
+                      maxTorque 100
+                    }
+                  ]
+                  endPoint Solid {
+                    translation 0 -0.25 0
+                    children [
+                      DEF left_foot Shape {
+                        appearance PBRAppearance {
+                          roughness 1
+                          metalness 0
+                        }
+                        geometry Box {
+                          size 0.2 0.05 0.4
+                        }
+                      }
+                    ]
+                    boundingObject USE left_foot
+                    physics Physics {
+                    }
+                  }
+                }
+              ]
+              boundingObject USE left_shin
+              physics Physics {
+              }
             }
           }
         ]
@@ -58,16 +151,34 @@ Robot {
         }
       }
     }
-    HingeJoint {
-      jointParameters HingeJointParameters {
-        anchor -0.185 0.79 0
+    BallJoint {
+      jointParameters BallJointParameters {
+        anchor -0.185 0.85 0
+      }
+      jointParameters2 JointParameters {
+        axis 1 0 0
+      }
+      jointParameters3 JointParameters {
       }
       device [
         RotationalMotor {
+          name "right_hip_pitch"
+        }
+      ]
+      device2 [
+        RotationalMotor {
+          name "right_hip_yaw"
+          minPosition -1.5707963267948966
+          maxPosition 1.5707963267948966
+        }
+      ]
+      device3 [
+        RotationalMotor {
+          name "right_hip_roll"
         }
       ]
       endPoint Solid {
-        translation -0.185 0.79 0
+        translation -0.185 0.85 0
         rotation 1 0 0 0
         children [
           DEF upperRightLeg Shape {
@@ -76,8 +187,92 @@ Robot {
               metalness 0
             }
             geometry Capsule {
-              height 0.45
+              height 0.3
               radius 0.075
+            }
+          }
+          HingeJoint {
+            jointParameters HingeJointParameters {
+              anchor 0 -0.45 0
+            }
+            device [
+              RotationalMotor {
+                name "right_knee_pitch"
+              }
+            ]
+            endPoint Solid {
+              translation 0 -0.45 0
+              rotation 1 0 0 0
+              children [
+                DEF right_shin Shape {
+                  appearance PBRAppearance {
+                    roughness 1
+                    metalness 0
+                  }
+                  geometry Capsule {
+                    height 0.3
+                    radius 0.075
+                  }
+                }
+                BallJoint {
+                  jointParameters BallJointParameters {
+                    anchor 0 -0.25 0
+                  }
+                  jointParameters2 JointParameters {
+                  }
+                  jointParameters3 JointParameters {
+                    axis 1 0 0
+                  }
+                  device [
+                    RotationalMotor {
+                      name "right_foot_pitch"
+                      maxTorque 100
+                    }
+                  ]
+                  device2 [
+                    RotationalMotor {
+                      name "right_foot_yaw"
+                      minPosition -1.5707963267948966
+                      maxPosition 1.5707963267948966
+                    }
+                  ]
+                  device3 [
+                    RotationalMotor {
+                      name "right_foot_roll"
+                      maxTorque 100
+                    }
+                  ]
+                  endPoint Solid {
+                    translation 0 -0.25 0
+                    children [
+                      DEF right_foot Shape {
+                        appearance PBRAppearance {
+                          roughness 1
+                          metalness 0
+                        }
+                        geometry Box {
+                          size 0.2 0.05 0.4
+                        }
+                      }
+                    ]
+                    boundingObject USE right_foot
+                    physics Physics {
+                    }
+                  }
+                }
+              ]
+              boundingObject USE right_shin
+              physics Physics {
+                density -1
+                mass 7.068583470577034
+                centerOfMass [
+                  0 0 0
+                ]
+                inertiaMatrix [
+                  0.10586308213356384 0.018886371460448012 0.10586308213356384
+                  0 0 0
+                ]
+              }
             }
           }
         ]
