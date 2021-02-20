@@ -5,10 +5,10 @@
 from controller import Robot, Accelerometer, Gyro
 
 def integral(error, priorIntegral):
-  return priorIntegral + error * (TIMESTEP+1 - TIMESTEP)
+  return priorIntegral + error * (TIMESTEP)
 
 def derivative(error, priorError):
-  return (error-priorError)/(TIMESTEP+1 - TIMESTEP)
+  return (error-priorError)/(TIMESTEP)
 
 def actuatorMovement(robot, pidOutput):
   #Inverse Kinematic Equation
@@ -48,19 +48,19 @@ def controllerPID(robot, error, priorError, priorIntegral):
   
   if(ux > maxMotor):
     ux = maxMotor
-    integralX = integralX - error[0]*(TIMESTEP+1 - TIMESTEP)
+    integralX = integralX - error[0]*(TIMESTEP)
   elif(ux < minMotor):
     ux = minMotor
-    integralX = integralX - error[0]*(TIMESTEP+1 - TIMESTEP)
+    integralX = integralX - error[0]*(TIMESTEP)
   
   uy = nominalValue + Kc*error[1] + Kc/tauI * integralY + Kc * tauD * derivativeY
 
   if(uy > maxMotor):
     uy = maxMotor
-    integralY = integralY - error[1]*(TIMESTEP+1 - TIMESTEP)
+    integralY = integralY - error[1]*(TIMESTEP)
   elif(ux < minMotor):
     uy = minMotor
-    integralY = integralY - error[1]*(TIMESTEP+1 - TIMESTEP)
+    integralY = integralY - error[1]*(TIMESTEP)
 
   priorError = error
   priorIntegral = [integralX, integralY]
@@ -81,7 +81,6 @@ def calculateZMP(gyro, accel):
 
   return xObs, yObs
 
-# Might have to actually code this later
 def calculateCOM(robot):
   # links needed to calculate COM
   torso = robot.getDevice("torsoMotor")
@@ -94,7 +93,6 @@ def calculateCOM(robot):
   centerOfMass = [0, 0, 0, 0]
 
   for i in links: 
-
     # instantiation of values
     # need to add code to get joint angles
     if i == torso:
