@@ -1,10 +1,11 @@
 #VRML_SIM R2021a utf8
 WorldInfo {
+  gravity 0.2
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation -0.7108788721149584 -0.6798276004460428 -0.18023779529371817 0.7628366439986357
-  position -1.529898492340523 2.6913118496032213 2.7543281313960564
+  orientation -0.048379992001633905 -0.9988161558244542 -0.005065889653491801 0.7456617071754322
+  position -3.612561450129352 1.0571051522533501 1.7706349845759928
 }
 TexturedBackground {
 }
@@ -14,7 +15,8 @@ RectangleArena {
   floorSize 5 5
 }
 Robot {
-  translation 0 -0.12 0
+  translation -1 2 0
+  rotation -1 0 0 1.57
   children [
     DEF Body Transform {
       translation 0 1.05 0
@@ -32,7 +34,7 @@ Robot {
     }
     BallJoint {
       jointParameters BallJointParameters {
-        anchor 0.185 0.85 0
+        anchor 0.185 1.15 0
       }
       jointParameters2 JointParameters {
         axis 1 0 0
@@ -72,7 +74,7 @@ Robot {
           }
           HingeJoint {
             jointParameters HingeJointParameters {
-              anchor 0 -0.45 0
+              anchor 0 -0.225 0
             }
             device [
               RotationalMotor {
@@ -104,20 +106,20 @@ Robot {
                   }
                   device [
                     RotationalMotor {
-                      name "left_ankle_pitch"
+                      name "left_ankle_yaw"
                       maxTorque 100
                     }
                   ]
                   device2 [
                     RotationalMotor {
-                      name "left_ankle_yaw"
+                      name "left_ankle_roll"
                       minPosition -1.5707963267948966
                       maxPosition 1.5707963267948966
                     }
                   ]
                   device3 [
                     RotationalMotor {
-                      name "left_ankle_roll"
+                      name "left_ankle_pitch"
                       maxTorque 100
                     }
                   ]
@@ -180,7 +182,7 @@ Robot {
     }
     BallJoint {
       jointParameters BallJointParameters {
-        anchor -0.185 0.85 0
+        anchor -0.185 1.15 0
       }
       jointParameters2 JointParameters {
         axis 1 0 0
@@ -220,7 +222,7 @@ Robot {
           }
           HingeJoint {
             jointParameters HingeJointParameters {
-              anchor 0 -0.45 0
+              anchor 0 -0.225 0
             }
             device [
               RotationalMotor {
@@ -243,7 +245,7 @@ Robot {
                 }
                 BallJoint {
                   jointParameters BallJointParameters {
-                    anchor 0 -0.25 0
+                    anchor 0 -0.225 0
                   }
                   jointParameters2 JointParameters {
                   }
@@ -252,20 +254,20 @@ Robot {
                   }
                   device [
                     RotationalMotor {
-                      name "right_ankle_pitch"
+                      name "right_ankle_yaw"
                       maxTorque 100
                     }
                   ]
                   device2 [
                     RotationalMotor {
-                      name "right_ankle_yaw"
+                      name "right_ankle_roll"
                       minPosition -1.5707963267948966
                       maxPosition 1.5707963267948966
                     }
                   ]
                   device3 [
                     RotationalMotor {
-                      name "right_ankle_roll"
+                      name "right_ankle_pitch"
                       maxTorque 100
                     }
                   ]
@@ -398,6 +400,7 @@ Robot {
               children [
                 HingeJoint {
                   jointParameters HingeJointParameters {
+                    anchor 0 -0.2125 0
                   }
                   device [
                     RotationalMotor {
@@ -544,6 +547,7 @@ Robot {
               children [
                 HingeJoint {
                   jointParameters HingeJointParameters {
+                    anchor 0 -0.2125 0
                   }
                   device [
                     RotationalMotor {
