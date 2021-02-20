@@ -62,7 +62,7 @@ Robot {
         translation 0.185 0.85 0
         rotation -1 0 0 1.8916846600245166e-06
         children [
-          DEF upperLeftLeg Shape {
+          DEF left_thigh Shape {
             appearance PBRAppearance {
               roughness 1
               metalness 0
@@ -166,7 +166,7 @@ Robot {
             }
           }
         ]
-        boundingObject USE upperLeftLeg
+        boundingObject USE left_thigh
         physics Physics {
           density -1
           mass 7.068583470577034
@@ -210,7 +210,7 @@ Robot {
         translation -0.185 0.85 0
         rotation 1 0 0 0
         children [
-          DEF upperRightLeg Shape {
+          DEF right_thigh Shape {
             appearance PBRAppearance {
               roughness 1
               metalness 0
@@ -314,8 +314,8 @@ Robot {
             }
           }
         ]
-        name "upperRightLegMotor"
-        boundingObject USE upperRightLeg
+        name "right_thigh_motor"
+        boundingObject USE right_thigh
         physics Physics {
           density -1
           mass 7.068583470577034
@@ -411,7 +411,7 @@ Robot {
                     translation 0 -0.42499999999726895 -1.5235950555825944e-06
                     rotation 1 0 0 3.5849604925388305e-06
                     children [
-                      DEF right_elbow Shape {
+                      DEF right_lower_arm Shape {
                         appearance PBRAppearance {
                           roughness 1
                           metalness 0
@@ -422,7 +422,7 @@ Robot {
                         }
                       }
                     ]
-                    boundingObject USE right_elbow
+                    boundingObject USE right_lower_arm
                     physics Physics {
                       density -1
                       mass 6.185010536754905
@@ -436,7 +436,7 @@ Robot {
                     }
                   }
                 }
-                DEF right_shoulder Shape {
+                DEF right_upper_arm Shape {
                   appearance PBRAppearance {
                     roughness 1
                     metalness 0
@@ -447,7 +447,7 @@ Robot {
                   }
                 }
               ]
-              boundingObject USE right_shoulder
+              boundingObject USE right_upper_arm
               physics Physics {
                 density -1
                 mass 7.068583470577034
@@ -558,7 +558,7 @@ Robot {
                     translation 0 -0.42499999999726895 -1.5235950555825944e-06
                     rotation 1 0 0 3.5849604925388305e-06
                     children [
-                      DEF left_elbow Shape {
+                      DEF left_lower_arm Shape {
                         appearance PBRAppearance {
                           roughness 1
                           metalness 0
@@ -569,7 +569,7 @@ Robot {
                         }
                       }
                     ]
-                    boundingObject USE left_elbow
+                    boundingObject USE left_lower_arm
                     physics Physics {
                       density -1
                       mass 6.185010536754905
@@ -583,7 +583,7 @@ Robot {
                     }
                   }
                 }
-                DEF left_shoulder Shape {
+                DEF left_upper_arm Shape {
                   appearance PBRAppearance {
                     roughness 1
                     metalness 0
@@ -595,7 +595,7 @@ Robot {
                 }
               ]
               name "solid(1)"
-              boundingObject USE left_shoulder
+              boundingObject USE left_upper_arm
               physics Physics {
                 density -1
                 mass 7.068583470577034
