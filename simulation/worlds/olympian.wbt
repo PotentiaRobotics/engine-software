@@ -4,8 +4,8 @@ WorldInfo {
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation -0.048379992001633905 -0.9988161558244542 -0.005065889653491801 0.7456617071754322
-  position -3.612561450129352 1.0571051522533501 1.7706349845759928
+  orientation -0.7752447244164626 -0.5132245726366987 -0.36823383237600654 1.5186048037836888
+  position -2.175946533475156 4.937428530305314 0.06846856025694995
 }
 TexturedBackground {
 }
@@ -21,7 +21,7 @@ Robot {
     DEF Body Transform {
       translation 0 1.05 0
       children [
-        Shape {
+        DEF pelvis Shape {
           appearance PBRAppearance {
             roughness 1
             metalness 0
@@ -409,7 +409,7 @@ Robot {
                   ]
                   endPoint Solid {
                     translation 0 -0.42499999999726895 -1.5235950555825944e-06
-                    rotation 1 0 0 3.5849604925388305e-06
+                    rotation 0.9999999999999999 0 0 3.5849604925388305e-06
                     children [
                       DEF right_lower_arm Shape {
                         appearance PBRAppearance {
@@ -556,7 +556,7 @@ Robot {
                   ]
                   endPoint Solid {
                     translation 0 -0.42499999999726895 -1.5235950555825944e-06
-                    rotation 1 0 0 3.5849604925388305e-06
+                    rotation 0.9999999999999999 0 0 3.5849604925388305e-06
                     children [
                       DEF left_lower_arm Shape {
                         appearance PBRAppearance {
