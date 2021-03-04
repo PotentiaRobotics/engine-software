@@ -2,7 +2,7 @@
 
 # You may need to import some classes of the controller module. Ex:
 #  from controller import Robot, Motor, DistanceSensor
-from controller import Robot
+from controller import Robot, TouchSensor
 import time
 import numpy as np
 
@@ -43,9 +43,9 @@ def calculateCOM(robot):
     
     # COM of each link is calculated forward kinematics equations
     calc = np.dot(transformationMatrixToLink,vectorOfJointAngles)
-    print(calc)
+    # print(calc)
     calc=np.dot(calc,transformationMatrixToLinkCOM) 
-    print(calc)                      
+    # print(calc)                      
     #calc = transformationMatrixToLink.dot(vectorOfJointAngles).dot(transformationMatrixToLinkCOM)
     
     # COM of the entire rigid body is calculated using a weighted average
@@ -58,57 +58,81 @@ def main():
     # create the Robot instance.
     print("Initializing world...")
     robot = Robot()
-    timestep = 64
-    start = 0
-    while robot.step(32) != -1:
-        print(calculateCOM(robot))
-        start += 32/1000.0
-        head_motor = robot.getDevice("torso_yaw")
-        # motor2 = robot.getDevice("neck_roll")
+    timestep = 16
+    curr_time = 0
+    
+    lfootsensor = robot.getDevice("torso_gyro")
+    
+        
+    while robot.step(timestep) != -1:
+        # print(calculateCOM(robot))
+        curr_time += timestep/1000.0
+        # head_motor = robot.getDevice("torso_yaw")
+        motor2 = robot.getDevice("neck_roll")
         lknee = robot.getDevice("left_knee_pitch")
         rknee = robot.getDevice("right_knee_pitch")
         lhip = robot.getDevice("left_hip_pitch")
         rhip = robot.getDevice("right_hip_pitch")
-        lfoot = robot.getDevice("left_ankle_pitch")
-        rfoot = robot.getDevice("right_ankle_pitch")
+        lfootsensor.enable(10)
         
-        torso_pitch = robot.getDevice("torso_pitch")
         
-        head_motor.setVelocity(1)
-        lknee.setVelocity(2)
-        rknee.setVelocity(2)
-        lknee.setPosition(2)
-        rknee.setPosition(2)
-        torso_pitch.setVelocity(10)
-        # torso_pitch.setTorque(10)
+        # print sensor data every second
         
-        lhip.setVelocity(2)
-        rhip.setVelocity(2)
-        lhip.setPosition(-0.7)
-        rhip.setPosition(-0.7)
-        
-        lfoot.setVelocity(2)
-        rfoot.setVelocity(2)
-        lfoot.setPosition(0.3)
-        rfoot.setPosition(0.3)
-        
-        pos = 0
-        add = False
-        
-        if start > 6:
-            while robot.step(32) != -1:
-                torso_pitch.setPosition(pos)
-                # time.sleep(0.1)
+        if curr_time % 1 < 0.01:
+            
+            print(lfootsensor.getValues())
+            
+        # lfoot = robot.getDevice("left_ankle_pitch")
+        # rfoot = robot.getDevice("right_ankle_pitch")
+
+def func():
+ 
+    torso_pitch = robot.getDevice("torso_pitch")
+    
+    # head_motor.setVelocity(1)
+    lknee.setVelocity(2)
+    # rknee.setVelocity(2)
+    lknee.setPosition(1)
+    # rknee.setPosition(2)
+    torso_pitch.setVelocity(2)
+    # torso_pitch.setTorque(10)
+    
+    lhip.setVelocity(2)
+    rhip.setVelocity(2)
+    lhip.setPosition(-1)
+    torso_pitch.setPosition(0.2)
+    # rhip.setPosition(-0.2)
+    # rknee.setPosition(0.2)
+    
+    # rhip.setPosition(-0.7)
+    
+    # lfoot.setVelocity(2)
+    # rfoot.setVelocity(2)
+    # lfoot.setPosition(0.3)
+    # rfoot.setPosition(0.3)
+    
+    if curr_time > 1:
+        lknee.setPosition(0.1)
+        lhip.setPosition(0.5)
+        torso_pitch.setPosition(0.7)
+    
+    # pos = 0
+    # add = False
+    
+    # if curr_time > 6:
+        # while robot.step(32) != -1:
+            # torso_pitch.setPosition(pos)
+            # time.sleep(0.1)
+            
+            # if add:
+                # pos += 0.2
+            # else:
+                # pos -= 0.2
                 
-                if add:
-                    pos += 0.2
-                else:
-                    pos -= 0.2
-                    
-                if pos >= 2:
-                    add = False
-                elif pos <= 0:
-                    add = True
+            # if pos >= 2:
+                # add = False
+            # elif pos <= 0:
+                # add = True
     
     # get the time step of the current world.
     # timestep = int(robot.getBasicTimeStep())
@@ -134,6 +158,4 @@ def main():
     
     # Enter here exit cleanup code.
     
-    
-if __name__ == '__main__':
-    main()
+main()

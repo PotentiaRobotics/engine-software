@@ -1,11 +1,12 @@
 #VRML_SIM R2021a utf8
 WorldInfo {
   gravity 0.2
+  basicTimeStep 16
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation -0.7752447244164626 -0.5132245726366987 -0.36823383237600654 1.5186048037836888
-  position -2.175946533475156 4.937428530305314 0.06846856025694995
+  orientation -0.6002466325295073 0.7753295528057134 0.19638753698511255 0.7477472527006542
+  position 0.844819390262747 2.391065676253801 3.2173738573028166
 }
 TexturedBackground {
 }
@@ -15,9 +16,16 @@ RectangleArena {
   floorSize 5 5
 }
 Robot {
-  translation -1 2 0
-  rotation -1 0 0 1.57
+  translation -1 0 0
   children [
+    Gyro {
+      translation 0 1.05 0
+      name "pelvis_gyro"
+    }
+    Accelerometer {
+      translation 0 1.05 0
+      name "pelvis_accelerometer"
+    }
     DEF Body Transform {
       translation 0 1.05 0
       children [
@@ -42,11 +50,17 @@ Robot {
       jointParameters3 JointParameters {
       }
       device [
+        PositionSensor {
+          name "left_hip_pitch_position_sensor"
+        }
         RotationalMotor {
           name "left_hip_pitch"
         }
       ]
       device2 [
+        PositionSensor {
+          name "left_hip_yaw_position_sensor"
+        }
         RotationalMotor {
           name "left_hip_yaw"
           minPosition -1.5707963267948966
@@ -54,6 +68,9 @@ Robot {
         }
       ]
       device3 [
+        PositionSensor {
+          name "left_hip_roll_position_sensor"
+        }
         RotationalMotor {
           name "left_hip_roll"
         }
@@ -77,6 +94,9 @@ Robot {
               anchor 0 -0.225 0
             }
             device [
+              PositionSensor {
+                name "left_knee_pitch_position_sensor"
+              }
               RotationalMotor {
                 name "left_knee_pitch"
               }
@@ -105,12 +125,18 @@ Robot {
                     axis 1 0 0
                   }
                   device [
+                    PositionSensor {
+                      name "left_ankle_yaw_position_sensor"
+                    }
                     RotationalMotor {
                       name "left_ankle_yaw"
                       maxTorque 100
                     }
                   ]
                   device2 [
+                    PositionSensor {
+                      name "left_ankle_roll_position_sensor"
+                    }
                     RotationalMotor {
                       name "left_ankle_roll"
                       minPosition -1.5707963267948966
@@ -118,6 +144,9 @@ Robot {
                     }
                   ]
                   device3 [
+                    PositionSensor {
+                      name "left_ankle_pitch_position_sensor"
+                    }
                     RotationalMotor {
                       name "left_ankle_pitch"
                       maxTorque 100
@@ -126,6 +155,51 @@ Robot {
                   endPoint Solid {
                     translation 0 -0.25 0
                     children [
+                      TouchSensor {
+                        children [
+                          Solid {
+                            translation 0 -0.05 0
+                            children [
+                              DEF left_foot_force_sensor_shape Shape {
+                                appearance PBRAppearance {
+                                  baseColor 0 0 0
+                                  roughness 1
+                                  metalness 0
+                                }
+                                geometry Box {
+                                  size 0.2 0.05 0.4
+                                }
+                              }
+                            ]
+                            boundingObject USE left_foot_force_sensor_shape
+                            physics Physics {
+                              density -1
+                              mass 4.000000000000001
+                              centerOfMass [
+                                0 0 0
+                              ]
+                              inertiaMatrix [
+                                0.054166666666666696 0.0666666666666667 0.014166666666666675
+                                0 0 0
+                              ]
+                            }
+                          }
+                        ]
+                        name "left_foot_force_sensor"
+                        boundingObject USE left_foot_force_sensor_shape
+                        physics Physics {
+                          density -1
+                          mass 4.000000000000001
+                          centerOfMass [
+                            0 0 0
+                          ]
+                          inertiaMatrix [
+                            0.054166666666666696 0.0666666666666667 0.014166666666666675
+                            0 0 0
+                          ]
+                        }
+                        type "force"
+                      }
                       DEF left_foot Shape {
                         appearance PBRAppearance {
                           roughness 1
@@ -190,11 +264,17 @@ Robot {
       jointParameters3 JointParameters {
       }
       device [
+        PositionSensor {
+          name "right_hip_pitch_position_sensor"
+        }
         RotationalMotor {
           name "right_hip_pitch"
         }
       ]
       device2 [
+        PositionSensor {
+          name "right_hip_yaw_position_sensor"
+        }
         RotationalMotor {
           name "right_hip_yaw"
           minPosition -1.5707963267948966
@@ -202,6 +282,9 @@ Robot {
         }
       ]
       device3 [
+        PositionSensor {
+          name "right_hip_roll_position_sensor"
+        }
         RotationalMotor {
           name "right_hip_roll"
         }
@@ -225,6 +308,9 @@ Robot {
               anchor 0 -0.225 0
             }
             device [
+              PositionSensor {
+                name "right_knee_pitch_position_sensor"
+              }
               RotationalMotor {
                 name "right_knee_pitch"
               }
@@ -253,12 +339,18 @@ Robot {
                     axis 1 0 0
                   }
                   device [
+                    PositionSensor {
+                      name "right_ankle_yaw_position_sensor"
+                    }
                     RotationalMotor {
                       name "right_ankle_yaw"
                       maxTorque 100
                     }
                   ]
                   device2 [
+                    PositionSensor {
+                      name "right_ankle_roll_position_sensor"
+                    }
                     RotationalMotor {
                       name "right_ankle_roll"
                       minPosition -1.5707963267948966
@@ -266,6 +358,9 @@ Robot {
                     }
                   ]
                   device3 [
+                    PositionSensor {
+                      name "right_ankle_pitch_position_sensor"
+                    }
                     RotationalMotor {
                       name "right_ankle_pitch"
                       maxTorque 100
@@ -274,6 +369,51 @@ Robot {
                   endPoint Solid {
                     translation 0 -0.25 0
                     children [
+                      TouchSensor {
+                        translation 0 -0.05 0
+                        children [
+                          Solid {
+                            children [
+                              DEF right_foot_force_sensor_shape Shape {
+                                appearance PBRAppearance {
+                                  baseColor 0 0 0
+                                  roughness 1
+                                  metalness 0
+                                }
+                                geometry Box {
+                                  size 0.2 0.05 0.4
+                                }
+                              }
+                            ]
+                            boundingObject USE right_foot_force_sensor_shape
+                            physics Physics {
+                              density -1
+                              mass 4.000000000000001
+                              centerOfMass [
+                                0 0 0
+                              ]
+                              inertiaMatrix [
+                                0.054166666666666696 0.0666666666666667 0.014166666666666675
+                                0 0 0
+                              ]
+                            }
+                          }
+                        ]
+                        name "right_foot_force_sensor"
+                        boundingObject USE right_foot_force_sensor_shape
+                        physics Physics {
+                          density -1
+                          mass 4.000000000000001
+                          centerOfMass [
+                            0 0 0
+                          ]
+                          inertiaMatrix [
+                            0.054166666666666696 0.0666666666666667 0.014166666666666675
+                            0 0 0
+                          ]
+                        }
+                        type "force-3d"
+                      }
                       DEF right_foot Shape {
                         appearance PBRAppearance {
                           roughness 1
@@ -339,11 +479,17 @@ Robot {
       jointParameters3 JointParameters {
       }
       device [
+        PositionSensor {
+          name "torso_pitch_position_sensor"
+        }
         RotationalMotor {
           name "torso_pitch"
         }
       ]
       device2 [
+        PositionSensor {
+          name "torso_yaw_position_sensor"
+        }
         RotationalMotor {
           name "torso_yaw"
           minPosition -1.5707963267948966
@@ -351,6 +497,9 @@ Robot {
         }
       ]
       device3 [
+        PositionSensor {
+          name "torso_roll_position_sensor"
+        }
         RotationalMotor {
           name "torso_roll"
         }
@@ -359,6 +508,12 @@ Robot {
         translation 0 1.51 0
         rotation 1 0 0 0
         children [
+          Gyro {
+            name "torso_gyro"
+          }
+          Accelerometer {
+            name "torso_accelerometer"
+          }
           DEF torso Shape {
             appearance PBRAppearance {
               roughness 1
@@ -378,11 +533,17 @@ Robot {
               axis 1 0 0
             }
             device [
+              PositionSensor {
+                name "right_shoulder_roll_position_sensor"
+              }
               RotationalMotor {
                 name "right_shoulder_roll"
               }
             ]
             device2 [
+              PositionSensor {
+                name "right_shoulder_yaw_position_sensor"
+              }
               RotationalMotor {
                 name "right_shoulder_yaw"
                 minPosition -1.5707963267948966
@@ -390,6 +551,9 @@ Robot {
               }
             ]
             device3 [
+              PositionSensor {
+                name "right_shoulder_pitch_position_sensor"
+              }
               RotationalMotor {
                 name "right_shoulder_pitch"
               }
@@ -403,13 +567,16 @@ Robot {
                     anchor 0 -0.2125 0
                   }
                   device [
+                    PositionSensor {
+                      name "right_elbow_pitch_position_sensor"
+                    }
                     RotationalMotor {
                       name "right_elbow_pitch"
                     }
                   ]
                   endPoint Solid {
                     translation 0 -0.42499999999726895 -1.5235950555825944e-06
-                    rotation 0.9999999999999999 0 0 3.5849604925388305e-06
+                    rotation 1 0 0 3.5849604925388305e-06
                     children [
                       DEF right_lower_arm Shape {
                         appearance PBRAppearance {
@@ -471,11 +638,17 @@ Robot {
             jointParameters3 JointParameters {
             }
             device [
+              PositionSensor {
+                name "neck_pitch_position_sensor"
+              }
               RotationalMotor {
                 name "neck_pitch"
               }
             ]
             device2 [
+              PositionSensor {
+                name "neck_yaw_position_sensor"
+              }
               RotationalMotor {
                 name "neck_yaw"
                 minPosition -1.5707963267948966
@@ -483,6 +656,9 @@ Robot {
               }
             ]
             device3 [
+              PositionSensor {
+                name "neck_roll_position_sensor"
+              }
               RotationalMotor {
                 name "neck_roll"
               }
@@ -526,11 +702,17 @@ Robot {
               axis 1 0 0
             }
             device [
+              PositionSensor {
+                name "left_shoulder_roll_position_sensor"
+              }
               RotationalMotor {
                 name "left_shoulder_roll"
               }
             ]
             device2 [
+              PositionSensor {
+                name "left_shoulder_yaw_position_sensor"
+              }
               RotationalMotor {
                 name "left_shoulder_yaw"
                 minPosition -1.5707963267948966
@@ -538,6 +720,9 @@ Robot {
               }
             ]
             device3 [
+              PositionSensor {
+                name "left_shoulder_pitch_position_sensor"
+              }
               RotationalMotor {
                 name "left_shoulder_pitch"
               }
@@ -550,6 +735,9 @@ Robot {
                     anchor 0 -0.2125 0
                   }
                   device [
+                    PositionSensor {
+                      name "left_elbow_pitch_position_sensor"
+                    }
                     RotationalMotor {
                       name "left_elbow_pitch"
                     }
