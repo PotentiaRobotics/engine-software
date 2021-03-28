@@ -2,7 +2,8 @@
 
 # You may need to import some classes of the controller module. Ex:
 #  from controller import Robot, Motor, DistanceSensor
-from controller import Robot, Accelerometer, Gyro
+from controller import Robot, Accelerometer, Gyro, TouchSensor, Supervisor
+import time
 
 def integral(error, priorIntegral):
   return priorIntegral + error * (TIMESTEP)
@@ -12,6 +13,26 @@ def derivative(error, priorError):
 
 def actuatorMovement(robot, pidOutput):
   #Inverse Kinematic Equation
+  torso_pitch = robot.getDevice("torso_pitch")
+  right_knee_pitch = robot.getDevice("left_hip_pitch")
+  left_knee_pitch = robot.getDevice("right_hip_pitch")
+
+  if pidOutput[0] > 0.5:
+     torso_pitch.setVelocity(1000)
+     right_knee_pitch.setVelocity(1000)
+     left_knee_pitch.setVelocity(1000)
+     torso_pitch.setPosition(-1.3)   
+     right_knee_pitch.setPosition(-1.3)   
+     left_knee_pitch.setPosition(-1.3)   
+     print("here1")
+  elif pidOutput[0] < -0.5:
+     torso_pitch.setVelocity(1000)
+     right_knee_pitch.setVelocity(1000)
+     left_knee_pitch.setVelocity(1000)
+     torso_pitch.setPosition(1.3)   
+     right_knee_pitch.setPosition(1.3)   
+     left_knee_pitch.setPosition(1.3)   
+     print("here2")
   return
 
 def controllerPID(robot, error, priorError, priorIntegral):
@@ -28,9 +49,9 @@ def controllerPID(robot, error, priorError, priorIntegral):
 
   nominalValue = 0.0
   Kc = 1.0 # Kc is the controller gain
-  tauI = 0.0 # tauI is the reset time, which is a tuning param for integral
+  tauI = 1.0 # tauI is the reset time, which is a tuning param for integral
   tauD = 0.0 # tauD is derivative time. Tuning param for derivative
-  maxMotor = 1.0 # How big the signal that goes to the actuator is
+  maxMotor = 1000.0 # How big the signal that goes to the actuator is
   minMotor = 0.0 # How small the signal that goes to the actuator is
   
   integralX = integral(error[0], priorIntegral[0])
@@ -65,6 +86,9 @@ def controllerPID(robot, error, priorError, priorIntegral):
   priorError = error
   priorIntegral = [integralX, integralY]
 
+  print("ux " + str(ux))
+  print("uy " + str(uy))
+
   actuatorMovement(robot, [ux, uy])
 
 
@@ -77,52 +101,22 @@ def calculateZMP(gyro, accel):
   gravity = 9.81
 
   xObs = -CoM_height/gravity * aData[0]
-  yObs = -CoM_height/gravity * aData[1]
+  yObs = -CoM_height/gravity * aData[2]
 
   return xObs, yObs
 
 def calculateCOM(robot):
-  # links needed to calculate COM
-  torso = robot.getDevice("torsoMotor")
-  upperLeftLeg= robot.getDevice("upperLeftLegMotor")
-  upperRightLeg = robot.getDevice("upperRightLegMotor")
-
-  links = [torso, upperLeftLeg, upperRightLeg] # additional links will be added, when they're made
-
-  totalMass = len(links) # assumption that all links have mass of 1
-  centerOfMass = [0, 0, 0, 0]
-
-  for i in links: 
-    # instantiation of values
-    # need to add code to get joint angles
-    if i == torso:
-        r = 0.25
-        theta0 = 0
-        theta1 = 0
-    else:
-        r = 0.225
-        theta0 = 0
-        theta1 = 0
+    links = ["left_foot", "left_shin", "left_thigh", "left_lower_arm", "left_upper_arm", "right_foot", "right_shin", 
+              "right_thigh", "right_lower_arm", "right_upper_arm", "torso", "head", "pelvis"]
     
-    # instantiation of matrices 
-    # assumption that all angle values are in degrees
-    transformationMatrixToLink = [[np.cos(theta0*np.pi/180), -np.sin(theta0*np.pi/180), 
-                                 0, 2r*np.cos(theta0*np.pi/180)], [np.sin(theta0*np.pi/180), 
-                                 np.cos(theta0*np.pi/180), 0, 2r*np.sin(theta0*np.pi/180)], 
-                                 [0, 0, 1, 0], [0, 0, 0, 1]]                       
-    vectorOfJointAngles = [2r*np.cos(theta1*np.pi/180), 2r*np.sin(theta1*np.pi/180), 0, 1]
-    transformationMatrixToLinkCOM = [[np.cos(theta1*np.pi/180), 0, -np.sin(theta1*np.pi/180), 
-                                    2r*np.cos(theta0*np.pi/180)], [0, 1, 0, 0], 
-                                    [np.sin(theta1*np.pi/180), 0, np.cos(theta1*np.pi/180), 
-                                    2r*np.sin(theta0*np.pi/180)], [0, 0, 0, 1]]
+    centerOfMass = [0, 0, 0]
     
-    # COM of each link is calculated forward kinematics equations                                
-    calc = transformationMatrixToLink.dot(vectorOfJointAngles).dot(transformationMatrixToLinkCOM)
+    for i in links:
+        temp = Supervisor.getFromDef(i)
+        tempCOM = temp.getCenterOfMass()
+        centerOfMass += tempCOM
     
-    # COM of the entire rigid body is calculated using a weighted average
-    centerOfMass += (1/totalMass)*calc
-    
-  return centerOfMass[0], centerOfMass[1], centerOfMass[2]
+    return centerOfMass/8.18
 
 def main():
   print("Initializing Olympiad...")
@@ -131,14 +125,14 @@ def main():
   # get the time step of the current world.
   global TIMESTEP
   TIMESTEP = int(robot.getBasicTimeStep())
-  
+
   # gyroscope, accelorometer
-  gyro = robot.getDevice("gyro.wbt name")
-  accel = robot.getDevice("accel .wbt name")
+  gyro = robot.getDevice("torso_gyro")
+  accel = robot.getDevice("torso_accelerometer")
 
   gyro.enable(TIMESTEP)
   accel.enable(TIMESTEP)
-
+  
   # If the ZMP is stable then there will be no trajectory
   # Assumes that the base-frame-origin is in between the two feet since it's standing
   # This stays under the x and y coor of the COM (assuming standing straight)
@@ -156,3 +150,58 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+# def main():
+    #create the Robot instance.
+    # print("Initializing world...")
+    # robot = Robot()
+    # timestep = 16
+    # curr_time = 0
+    
+    # lfootsensor = robot.getDevice("torso_gyro")
+    
+        
+    # while robot.step(timestep) != -1:
+        #print(calculateCOM(robot))
+        # curr_time += timestep/1000.0
+        #head_motor = robot.getDevice("torso_yaw")
+        # motor2 = robot.getDevice("neck_roll")
+        # lknee = robot.getDevice("left_knee_pitch")
+        # rknee = robot.getDevice("right_knee_pitch")
+        # lhip = robot.getDevice("left_hip_pitch")
+        # rhip = robot.getDevice("right_hip_pitch")
+        # lfootsensor.enable(10)
+        
+        
+        #print sensor data every second
+        
+        # if curr_time % 1 < 0.01:
+            
+            # print(lfootsensor.getValues())
+            
+        #lfoot = robot.getDevice("left_ankle_pitch")
+        #rfoot = robot.getDevice("right_ankle_pitch")
+
+def func():
+ 
+    torso_pitch = robot.getDevice("torso_pitch")
+    
+    lknee.setVelocity(2)
+    lknee.setPosition(1)
+    torso_pitch.setVelocity(2)
+
+    
+    lhip.setVelocity(2)
+    rhip.setVelocity(2)
+    lhip.setPosition(-1)
+    torso_pitch.setPosition(0.2)
+
+    
+    if curr_time > 1:
+        lknee.setPosition(0.1)
+        lhip.setPosition(0.5)
+        torso_pitch.setPosition(0.7)
+    
+    
+main()

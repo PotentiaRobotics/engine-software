@@ -130,7 +130,7 @@ Robot {
                     }
                     RotationalMotor {
                       name "left_ankle_yaw"
-                      maxTorque 100
+                      maxTorque 10000
                     }
                   ]
                   device2 [
@@ -149,7 +149,7 @@ Robot {
                     }
                     RotationalMotor {
                       name "left_ankle_pitch"
-                      maxTorque 100
+                      maxTorque 10000
                     }
                   ]
                   endPoint Solid {
@@ -344,7 +344,7 @@ Robot {
                     }
                     RotationalMotor {
                       name "right_ankle_yaw"
-                      maxTorque 100
+                      maxTorque 10000
                     }
                   ]
                   device2 [
@@ -363,7 +363,7 @@ Robot {
                     }
                     RotationalMotor {
                       name "right_ankle_pitch"
-                      maxTorque 100
+                      maxTorque 10000
                     }
                   ]
                   endPoint Solid {
@@ -484,6 +484,7 @@ Robot {
         }
         RotationalMotor {
           name "torso_pitch"
+          maxVelocity 100000
         }
       ]
       device2 [
