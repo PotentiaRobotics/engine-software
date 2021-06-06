@@ -1,0 +1,11 @@
+Webots Proto Cache File version 1.5
+protoFileHash: be970f8ed6f7375ebdc3922281bed0f7
+needsRobotAncestor: 0
+baseType: Group
+slotType: 
+parameters: 
+tags: hidden
+license:  Copyright Cyberbotics Ltd. Licensed for use only with Webots.
+licenseUrl:  https://cyberbotics.com/webots_assets_license
+documentationUrl: 
+info: Extracted\sfrom:\nhttps://bitbucket.org/osrf/drcsim/src/a43aef617288746c30be76f58afe23a4c3108b5f/ros/atlas_description/meshes/r_lleg.dae\n

@@ -1,0 +1,11 @@
+Webots Proto Cache File version 1.5
+protoFileHash: 15682c79e781302c431ea54fe1fe37ea
+needsRobotAncestor: 1
+baseType: Robot
+slotType: 
+parameters: translation,rotation,name,controller,controllerArgs,customData,supervisor,synchronization,pelvisSlot
+tags: 
+license:  Copyright Cyberbotics Ltd. Licensed for use only with Webots.
+licenseUrl:  https://cyberbotics.com/webots_assets_license
+documentationUrl: https://www.cyberbotics.com/doc/guide/atlas
+info: The\s"Atlas"\sis\sa\shumanoid\srobot\sdeveloped\sby\sBoston\sDynamics\swith\sfunding\sand\soversight\sfrom\sDARPA.\nExtracted\sfrom:\shttps://bitbucket.org/osrf/drcsim/src/c69ecab26a55/ros/atlas_description/urdf/atlas_simple_shapes.urdf\n
