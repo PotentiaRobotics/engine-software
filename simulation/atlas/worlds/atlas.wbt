@@ -10,15 +10,27 @@ WorldInfo {
   lineScale 0.25
 }
 Viewpoint {
-  orientation 0.07361487165598588 -0.9880371064661203 -0.13551209140563525 4.208435019952087
-  position 4.007193926491309 2.1969755916188816 -2.1227761648514134
+  orientation -0.01946869317373936 0.9993605860641073 0.029989815066301183 1.9905841599583447
+  position 5.8791583117842645 1.2945375732822115 -2.7941691397149198
 }
 TexturedBackground {
+  texture "dusk"
 }
 TexturedBackgroundLight {
+  texture "dusk"
 }
 Floor {
   size 1000 1000
 }
 Atlas {
+  controller "DynamicBalance"
+  supervisor TRUE
+  rightFootSlot [
+    Solid {
+    }
+  ]
+  leftFootSlot [
+    Solid {
+    }
+  ]
 }
