@@ -7,7 +7,7 @@ void setup() {
 }
 
 void loop() {
-  Wire.requestFrom(8, 27);    // request 100 bytes from slave device #8
+  Wire.requestFrom(8, 27);    // request 27 bytes from slave device #8
   String data = "";
   while (Wire.available()) { // slave may send less than requested
     char c = Wire.read(); // receive a byte as character
