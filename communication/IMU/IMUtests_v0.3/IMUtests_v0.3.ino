@@ -2,8 +2,13 @@
 const int MPU2=0x69,MPU1=0x68;
 int16_t AcX1,AcY1,AcZ1,Tmp1,GyX1,GyY1,GyZ1;
 int16_t AcX2,AcY2,AcZ2,Tmp2,GyX2,GyY2,GyZ2;
+float c_ax = 0;
+float c_ay = 0;
+float c_az = 0;
+float g_ax = 0;
+float g_ay = 0;
+float g_az = 0;
 
- 
 //-------------------------------------------------\setup loop\------------------------------------------------------------ 
  void setup(){ 
       Wire.begin(); 
@@ -19,18 +24,7 @@ int16_t AcX2,AcY2,AcZ2,Tmp2,GyX2,GyY2,GyZ2;
      } 
      
 //---------------------------------------------------\void loop\------------------------------------------------------------
- void loop(){
-   
-      //get values for first mpu having address of 0x68   
-      GetMpuValue1(MPU1);
-      Serial.print("  ");
-      Serial.print("|||");
-      
-      //get values for second mpu having address of 0x69
-      GetMpuValue2(MPU2);
-      Serial.println("");
-      delay(1000);
-    }
+
  
 //----------------------------------------------\user defined functions\-------------------------------------------------- 
       
@@ -49,17 +43,23 @@ int16_t AcX2,AcY2,AcZ2,Tmp2,GyX2,GyY2,GyZ2;
       GyY1=Wire.read()<<8| Wire.read(); // 0x45 (GYRO_YOUT_H) & 0x46 (GYRO_YOUT_L) 
       GyZ1=Wire.read()<<8| Wire.read(); // 0x47 (GYRO_ZOUT_H) & 0x48 (GYRO_ZOUT_L) 
       Serial.print("AcX = ");
-      Serial.print(AcX1/16384.0);
+      Serial.print((AcX1/16384.0)-c_ax);
       Serial.print(" | AcY = "); 
-      Serial.print(AcY1/16384.0);
+      Serial.print((AcY1/16384.0)-c_ay);
       Serial.print(" | AcZ = ");
-      Serial.print(AcZ1/16384.0); 
+      Serial.print((AcZ1/16384.0)-c_az); 
       Serial.print(" | GyX = ");
-      Serial.print(GyX1/131.0); 
+      Serial.print((GyX1/131.0)-g_ax); 
       Serial.print(" | GyY = "); 
-      Serial.print(GyY1/131.0);
+      Serial.print((GyY1/131.0)-g_ay);
       Serial.print(" | GyZ = ");
-      Serial.println(GyZ1/131.0); 
+      Serial.println((GyZ1/131.0)-g_az); 
+//      Serial.println(c_ax);
+//      Serial.println(c_ay);
+//      Serial.println(c_az);
+//      Serial.println(g_ax);
+//      Serial.println(g_ay);
+//      Serial.println(g_az);
      }
      
      
@@ -76,16 +76,40 @@ int16_t AcX2,AcY2,AcZ2,Tmp2,GyX2,GyY2,GyZ2;
       GyX2=Wire.read()<<8| Wire.read(); // 0x43 (GYRO_XOUT_H) & 0x44 (GYRO_XOUT_L) 
       GyY2=Wire.read()<<8| Wire.read(); // 0x45 (GYRO_YOUT_H) & 0x46 (GYRO_YOUT_L) 
       GyZ2=Wire.read()<<8| Wire.read(); // 0x47 (GYRO_ZOUT_H) & 0x48 (GYRO_ZOUT_L) 
-      Serial.print("AcX = ");
-      Serial.print(AcX2);
-      Serial.print(" | AcY = "); 
-      Serial.print(AcY2);
-      Serial.print(" | AcZ = ");
-      Serial.print(AcZ2);  
-      Serial.print(" | GyX = ");
-      Serial.print(GyX2); 
-      Serial.print(" | GyY = "); 
-      Serial.print(GyY2);
-      Serial.print(" | GyZ = ");
-      Serial.println(GyZ2); 
+//      Serial.print("AcX = ");
+//      Serial.print(AcX2);
+//      Serial.print(" | AcY = "); 
+//      Serial.print(AcY2);
+//      Serial.print(" | AcZ = ");
+//      Serial.print(AcZ2);  
+//      Serial.print(" | GyX = ");
+//      Serial.print(GyX2); 
+//      Serial.print(" | GyY = "); 
+//      Serial.print(GyY2);
+//      Serial.print(" | GyZ = ");
+//      Serial.println(GyZ2); 
      }
+
+      void loop(){
+   
+      //get values for first mpu having address of 0x68   
+      GetMpuValue1(MPU1);
+      Serial.print("  ");
+//      Serial.print("|||");
+      
+      //get values for second mpu having address of 0x69
+      GetMpuValue2(MPU2);
+      Serial.println("");
+      if(Serial.available()){
+        Serial.println("reset");
+        Serial.read();
+          c_ax = AcX1/16384.0;
+          c_ay = AcY1/16384.0;
+          c_az = AcZ1/16384.0;
+          g_ax = GyX1/131.0;
+          g_ay = GyY1/131.0;
+          g_az = GyZ1/131.0;
+
+      }
+      delay(100);
+    }
