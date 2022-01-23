@@ -1,6 +1,5 @@
 #include <Wire.h>
-//from https://create.arduino.cc/projecthub/MinukaThesathYapa/arduino-mpu6050-accelerometer-f92d8b
-//currently trying to tweak why the thing is increasing a lot :(
+//https://create.arduino.cc/projecthub/MinukaThesathYapa/arduino-mpu6050-accelerometer-f92d8b
 const int MPU = 0x68;
 float AccX, AccY, AccZ;
 float GyroX, GyroY, GyroZ;
@@ -9,14 +8,11 @@ float roll, pitch, yaw;
 float AccErrorX, AccErrorY, GyroErrorX, GyroErrorY, GyroErrorZ;
 float elapsedTime, currentTime, previousTime;
 int c = 0;
-float roc_p = 0;
-float roc_y = 0;
-float roc_r = 0;
+int ticker = 1;
+float c_r = 0.02666666666666666666666666666666666;
+float c_p = 0.00734734734734734734734734734734734;
+float c_y = 0.040754754754754754754754754754755; 
 
-float p_p = 0;
-float p_y = 0;
-float p_r = 0;
-int ticker = 0;
 void setup() 
 {
   Serial.begin(19200);
@@ -59,23 +55,14 @@ void loop()
   yaw =  yaw + GyroZ * elapsedTime;
   roll = 0.96 * gyroAngleX + 0.04 * accAngleX;
   pitch = 0.96 * gyroAngleY + 0.04 * accAngleY;
-  roll = roll*2;
-  pitch = pitch*2;
-  yaw = yaw*2;
-  while(roll<0.0){roll+=360.0;}
-  while(pitch<0.0){pitch+=360.0;}
-  while(yaw<0.0){yaw+=360.0;}
-   while(roll>=360.0){roll-=360.0;}
-  while(pitch>=360.0){pitch-=360.0;}
-  while(yaw>=360.0){yaw-=360.0;}
+  Serial.print(roll+c_r*ticker);
+  Serial.print("/");
+  Serial.print(pitch+c_p*ticker);
+  Serial.print("/");
+  Serial.println(yaw+c_y*ticker);
+  ticker++;
   
-  Serial.print(roll);
-  Serial.print("/");
-  Serial.print(pitch);
-  Serial.print("/");
-  Serial.println(yaw);
-  if(ticker<100){ticker+=1;}
-
+  
 }
 
 
