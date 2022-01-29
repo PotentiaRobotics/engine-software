@@ -131,6 +131,8 @@ uint8_t mpuIntStatus;   // holds actual interrupt status byte from MPU
 
 uint8_t mpu2IntStatus;   // holds actual interrupt status byte from MPU
 uint8_t devStatus;      // return status after each device operation (0 = success, !0 = error)
+
+uint8_t devStatus2;      // return status after each device operation (0 = success, !0 = error)
 uint16_t packetSize;    // expected DMP packet size (default is 42 bytes)
 
 uint16_t packetSize2;    // expected DMP packet size (default is 42 bytes)
@@ -228,7 +230,7 @@ void setup() {
     mpu2.setZAccelOffset(1788); // 1688 factory default for my test chip
 
     // make sure it worked (returns 0 if so)
-    if (devStatus == 0) {
+    if (devStatus == 0 and devStatus2 == 0) {
         // Calibration Time: generate offsets and calibrate our MPU6050
         mpu.CalibrateAccel(6);
         mpu.CalibrateGyro(6);
@@ -295,15 +297,6 @@ void loop() {
             Serial.print(q.y);
             Serial.print("\t");
             Serial.println(q.z);
-            mpu2.dmpGetQuaternion(&q, fifoBuffer);
-            Serial.print("quat2\t");
-            Serial.print(q.w);
-            Serial.print("\t");
-            Serial.print(q.x);
-            Serial.print("\t");
-            Serial.print(q.y);
-            Serial.print("\t");
-            Serial.println(q.z);
         #endif
 
         #ifdef OUTPUT_READABLE_EULER
@@ -329,15 +322,6 @@ void loop() {
             Serial.print(ypr[1] * 180/M_PI);
             Serial.print("\t");
             Serial.println(ypr[2] * 180/M_PI);
-            mpu2.dmpGetQuaternion(&q, fifoBuffer);
-            mpu2.dmpGetGravity(&gravity, &q);
-            mpu2.dmpGetYawPitchRoll(ypr2, &q, &gravity);
-            Serial.print("ypr2\t");
-            Serial.print(ypr2[0] * 180/M_PI);
-            Serial.print("\t");
-            Serial.print(ypr2[1] * 180/M_PI);
-            Serial.print("\t");
-            Serial.println(ypr2[2] * 180/M_PI);
         #endif
 
         #ifdef OUTPUT_READABLE_REALACCEL
@@ -380,6 +364,94 @@ void loop() {
             teapotPacket[7] = fifoBuffer[9];
             teapotPacket[8] = fifoBuffer[12];
             teapotPacket[9] = fifoBuffer[13];
+            Serial.write(teapotPacket, 14);
+            teapotPacket[11]++; // packetCount, loops at 0xFF on purpose
+        #endif
+
+        // blink LED to indicate activity
+        blinkState = !blinkState;
+        digitalWrite(LED_PIN, blinkState);
+    }
+    // read a packet from 2nd mpu FIFO
+    if (mpu2.dmpGetCurrentFIFOPacket(fifoBuffer2)) { // Get the Latest packet 
+        #ifdef OUTPUT_READABLE_QUATERNION
+            // display quaternion values in easy matrix form: w x y z
+            mpu2.dmpGetQuaternion(&q, fifoBuffer2);
+            Serial.print("quat2\t");
+            Serial.print(q.w);
+            Serial.print("\t");
+            Serial.print(q.x);
+            Serial.print("\t");
+            Serial.print(q.y);
+            Serial.print("\t");
+            Serial.println(q.z);
+        #endif
+
+        #ifdef OUTPUT_READABLE_EULER
+            // display Euler angles in degrees
+            mpu2.dmpGetQuaternion(&q, fifoBuffer2);
+            mpu2.dmpGetEuler(euler, &q);
+            Serial.print("euler2\t");
+            Serial.print(euler[0] * 180/M_PI);
+            Serial.print("\t");
+            Serial.print(euler[1] * 180/M_PI);
+            Serial.print("\t");
+            Serial.println(euler[2] * 180/M_PI);
+        #endif
+
+        #ifdef OUTPUT_READABLE_YAWPITCHROLL
+            // display Euler angles in degrees
+            mpu2.dmpGetQuaternion(&q, fifoBuffer2);
+            mpu2.dmpGetGravity(&gravity, &q);
+            mpu2.dmpGetYawPitchRoll(ypr, &q, &gravity);
+            Serial.print("ypr2\t");
+            Serial.print(ypr[0] * 180/M_PI);
+            Serial.print("\t");
+            Serial.print(ypr[1] * 180/M_PI);
+            Serial.print("\t");
+            Serial.println(ypr[2] * 180/M_PI);
+        #endif
+
+        #ifdef OUTPUT_READABLE_REALACCEL
+            // display real acceleration, adjusted to remove gravity
+            mpu2.dmpGetQuaternion(&q, fifoBuffer2);
+            mpu2.dmpGetAccel(&aa, fifoBuffer2);
+            mpu2.dmpGetGravity(&gravity, &q);
+            mpu2.dmpGetLinearAccel(&aaReal, &aa, &gravity);
+            Serial.print("areal2\t");
+            Serial.print(aaReal.x);
+            Serial.print("\t");
+            Serial.print(aaReal.y);
+            Serial.print("\t");
+            Serial.println(aaReal.z);
+        #endif
+
+        #ifdef OUTPUT_READABLE_WORLDACCEL
+            // display initial world-frame acceleration, adjusted to remove gravity
+            // and rotated based on known orientation from quaternion
+            mpu2.dmpGetQuaternion(&q, fifoBuffer2);
+            mpu2.dmpGetAccel(&aa, fifoBuffer2);
+            mpu2.dmpGetGravity(&gravity, &q);
+            mpu2.dmpGetLinearAccel(&aaReal, &aa, &gravity);
+            mpu2.dmpGetLinearAccelInWorld(&aaWorld, &aaReal, &q);
+            Serial.print("aworld2\t");
+            Serial.print(aaWorld.x);
+            Serial.print("\t");
+            Serial.print(aaWorld.y);
+            Serial.print("\t");
+            Serial.println(aaWorld.z);
+        #endif
+    
+        #ifdef OUTPUT_TEAPOT
+            // display quaternion values in InvenSense Teapot demo format:
+            teapotPacket[2] = fifoBuffer2[0];
+            teapotPacket[3] = fifoBuffer2[1];
+            teapotPacket[4] = fifoBuffer2[4];
+            teapotPacket[5] = fifoBuffer2[5];
+            teapotPacket[6] = fifoBuffer2[8];
+            teapotPacket[7] = fifoBuffer2[9];
+            teapotPacket[8] = fifoBuffer2[12];
+            teapotPacket[9] = fifoBuffer2[13];
             Serial.write(teapotPacket, 14);
             teapotPacket[11]++; // packetCount, loops at 0xFF on purpose
         #endif
