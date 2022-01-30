@@ -1,9 +1,1 @@
-ICTFS is the good one, but it needs some tweaks (degrees going up)
-ICTFS v0.2 idk if it worked
-ICTFS v0.3 is the one from adafruit. It works-ish, but some of the measurements are kinda faulty.
-ICTFS v0.4 needs a lot of tweaks.
-
-Namely,
-- roll pitch and yaw are approximately half of what they need to be
-- degrees are going up like crazy
-- degrees can go past 359 and below 0 degrees (shouldn't happen)
+DMP6_v1.2 works great!
