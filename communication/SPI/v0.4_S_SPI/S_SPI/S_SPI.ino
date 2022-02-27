@@ -11,7 +11,10 @@
 volatile boolean received;
 volatile byte Slavereceived,Slavesend;
 int buttonvalue;
-int x = 5;
+int x = 65;
+int wai = 0;
+String t1 = "1.00 0.00 0.00 0.00";
+char Buf[32]; 
 void setup()
 
 {
@@ -35,44 +38,40 @@ ISR (SPI_STC_vect)                        //Inerrrput routine function
 }
 
 void loop()
-{ if(received)                            //Logic to SET LED ON OR OFF depending upon the value recerived from master
+{ 
+  if(received)                            //Logic to SET LED ON OR OFF depending upon the value recerived from master
    {
       if (Slavereceived==8) 
       {
-        x+=1;
+        if(wai==0){
+          t1.toCharArray(Buf,t1.length());
+        }
         
         
-        /*
-        digitalWrite(LEDpin,HIGH);         //Sets pin 7 as HIGH LED ON
-        Serial.println("Slave LED ON");
-      }else
-      {
-        digitalWrite(LEDpin,LOW);          //Sets pin 7 as LOW LED OFF
-        Serial.println("Slave LED OFF");
-      }
-      
-      buttonvalue = digitalRead(buttonpin);  // Reads the status of the pin 2
-      
-      if (buttonvalue == HIGH)               //Logic to set the value of x to send to master
-      {
-        x=1;
         
-      }else
-      {
-        x=0;*/
+        
+       
    
-      }
-           if(x == 10){x = 0;}
-           
+      
+        Serial.print(wai);
+        if(wai==t1.length()){x = 's';}
+        else{
+          if(wai==t1.length()+1){
+            wai=0;
+          }
+          
+            x = t1[wai];
+        }
+        
         Slavesend=x;        
         
                           
         SPDR = Slavesend;  
         SPDR = x;//Sends the x value to master via SPDR 
-        Serial.println(SPDR);  
-        Serial.println(Slavesend);
-        delay(500);
+        wai++;
+        delay(250);
+        
       
  
 }
-}
+}}

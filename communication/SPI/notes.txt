@@ -1,0 +1,10 @@
+0.2 is spi with random data (incrementing characters)
+0.4 is spi with a seperator bytes
+0.5 is spi with both start and end bytes, sensing whether there is data avilable before putting a start byte
+
+
+future
+------
+
+0.6 will make it into a string for useful inputs, that can then be converted into float arrays.
+1.0 is full integration with MPU6050

@@ -7,7 +7,7 @@
 #define LED 7           
 #define ipbutton 2
 int buttonvalue;
-int x;
+int x;  
 void setup (void)
 
 {
@@ -31,7 +31,9 @@ void loop(void)
   
   Mastersend = buttonvalue;                            
   Mastereceive=SPI.transfer(Mastersend); //Send the mastersend value to slave also receives value from slave
+  Serial.print((int) Mastereceive);
+  Serial.print("\t");
   
-  Serial.println(Mastereceive);
-  delay(50);
+  Serial.println((char) Mastereceive);
+  delay(250);
 }
