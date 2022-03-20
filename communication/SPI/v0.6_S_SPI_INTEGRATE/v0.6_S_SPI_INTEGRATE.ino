@@ -46,15 +46,29 @@ THE SOFTWARE.
 
 // I2Cdev and MPU6050 must be installed as libraries, or else the .cpp/.h files
 // for both classes must be in the include path of your project
-#include <I2Cdev.h>
+int laste = 0;
+#include<SPI.h>
+#define LEDpin 7
+#define buttonpin 2
+volatile boolean received;
+volatile byte Slavereceived,Slavesend;
+int buttonvalue;
+int x = 65;
+int wai = -1; //I forgot what WAI stood for, but basically counts what index the counter is at, if the string was a list or smth
+//-1 = at start
+//0 to t1.length()-1 = data
+//t1.length = at end
+String t0 = "1.00 0.00 0.00 0.00";
+String t1 = "1.00 0.00 0.00 0.00"; //will be changed to actual data in code.
+#include "I2Cdev.h"
 
-#include <MPU6050_6Axis_MotionApps20.h>
-#include <MPU6050.h> // not necessary if using MotionApps include file
+#include "MPU6050_6Axis_MotionApps20.h"
+//#include "MPU6050.h" // not necessary if using MotionApps include file
 
 // Arduino Wire library is required if I2Cdev I2CDEV_ARDUINO_WIRE implementation
 // is used in I2Cdev.h
 #if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
-    #include <Wire.h>
+    #include "Wire.h"
 #endif
 
 // class default I2C address is 0x68
@@ -64,6 +78,8 @@ THE SOFTWARE.
 MPU6050 mpu;
 MPU6050 mpu2(0x69); // <-- use for AD0 high
 
+char Buf[32];   
+int onset = 1;
 /* =========================================================================
    NOTE: In addition to connection 3.3v, GND, SDA, and SCL, this sketch
    depends on the MPU-6050's INT pin being connected to the Arduino's
@@ -87,7 +103,7 @@ MPU6050 mpu2(0x69); // <-- use for AD0 high
 // uncomment "OUTPUT_READABLE_QUATERNION" if you want to see the actual
 // quaternion components in a [w, x, y, z] format (not best for parsing
 // on a remote host such as Processing or something though)
-//#define OUTPUT_READABLE_QUATERNION
+#define OUTPUT_READABLE_QUATERNION
 
 // uncomment "OUTPUT_READABLE_EULER" if you want to see Euler angles
 // (in degrees) calculated from the quaternions coming from the FIFO.
@@ -100,7 +116,7 @@ MPU6050 mpu2(0x69); // <-- use for AD0 high
 // from the FIFO. Note this also requires gravity vector calculations.
 // Also note that yaw/pitch/roll angles suffer from gimbal lock (for
 // more info, see: http://en.wikipedia.org/wiki/Gimbal_lock)
-#define OUTPUT_READABLE_YAWPITCHROLL
+//#define OUTPUT_READABLE_YAWPITCHROLL
 
 // uncomment "OUTPUT_READABLE_REALACCEL" if you want to see acceleration
 // components with gravity removed. This acceleration reference frame is
@@ -273,9 +289,22 @@ void setup() {
 
     // configure LED for output
     pinMode(LED_PIN, OUTPUT);
+    pinMode(buttonpin,INPUT);               // Setting pin 2 as INPUT
+  pinMode(LEDpin,OUTPUT);                 // Setting pin 7 as OUTPUT
+  pinMode(MISO,OUTPUT);                   //Sets MISO as OUTPUT (Have to Send data to Master IN 
+
+  SPCR |= _BV(SPE);                       //Turn on SPI in Slave Mode
+  received = false;
+
+  SPI.attachInterrupt();                  //Interuupt ON is set for SPI commnucation
+  Serial.println("SPI set up!");
 }
 
-
+ISR (SPI_STC_vect)                        //Inerrrput routine function 
+{
+  Slavereceived = SPDR;         // Value received from master if store in variable slavereceived
+  received = true;                        //Sets received as True 
+}
 
 // ================================================================
 // ===                    MAIN PROGRAM LOOP                     ===
@@ -297,6 +326,7 @@ void loop() {
             Serial.print(q.y);
             Serial.print("\t");
             Serial.println(q.z);
+            t1 = String(q.w)+" "+String(q.x)+" "+String(q.y)+" "+String(q.z);
         #endif
 
         #ifdef OUTPUT_READABLE_EULER
@@ -460,4 +490,53 @@ void loop() {
         blinkState = !blinkState;
         digitalWrite(LED_PIN, blinkState);
     }
-} 
+    if(received)                            //Logic to SET LED ON OR OFF depending upon the value recerived from master
+   {
+      if (Slavereceived==8) 
+      {
+        if(wai==-1 && t1.length()>18 && t1.length()<33){
+          //accepting a new string of data
+          t1.toCharArray(Buf,t1.length());
+          
+        }
+        //regular code -> bytewise.
+        if(t1.length()>18 && t1.length()<33){
+        
+        
+        
+        
+       
+   
+        //detecting which byte the data reading is on the string.
+        Serial.print(wai);
+        if(wai==t1.length()){x = 'e'; wai = -2; }/*t1 = "wqieuroqwueyroqwueyroiweuqyrioqwueyrioqweuryoiqweuryoiqweurywq";}*/ //end data byte, -2 + 1 = -1, which accepts data.
+        else{
+          if(wai == -1){x = 's';} //start byte
+          
+          else{
+            x = t1[wai];} //actual data byte
+        }}
+        
+        Slavesend=x;        
+        if(x==laste && x == (int) 'e'){
+          laste = x;
+          //"bad" data byte
+          x = 'b'; //"if there was an end byte show that there is no data" 
+        }
+        if(onset==1){
+          //"onset" byte (to avoid data offsets with actual bytes.
+          x = 'o';
+          wai--;
+          onset = 0;
+        }
+        laste = x; //"when was the last e" 
+           
+        SPDR = Slavesend;  
+        SPDR = x;//Sends the x value to master via SPDR 
+        wai++;
+        
+        }
+        delay(15);
+   }
+        
+}

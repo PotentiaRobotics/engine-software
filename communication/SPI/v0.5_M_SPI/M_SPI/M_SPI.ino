@@ -35,5 +35,5 @@ void loop(void)
   Serial.print("\t");
   
   Serial.println((char) Mastereceive);
-  delay(250);
+  delay(25);
 }
