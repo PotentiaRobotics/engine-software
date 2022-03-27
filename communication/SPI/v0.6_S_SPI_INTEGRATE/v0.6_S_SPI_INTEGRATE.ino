@@ -318,14 +318,14 @@ void loop() {
         #ifdef OUTPUT_READABLE_QUATERNION
             // display quaternion values in easy matrix form: w x y z
             mpu.dmpGetQuaternion(&q, fifoBuffer);
-            Serial.print("quat\t");
+            /*Serial.print("quat\t");
             Serial.print(q.w);
             Serial.print("\t");
             Serial.print(q.x);
             Serial.print("\t");
             Serial.print(q.y);
             Serial.print("\t");
-            Serial.println(q.z);
+            Serial.println(q.z);*/
             t1 = String(q.w)+" "+String(q.x)+" "+String(q.y)+" "+String(q.z);
         #endif
 
@@ -407,14 +407,14 @@ void loop() {
         #ifdef OUTPUT_READABLE_QUATERNION
             // display quaternion values in easy matrix form: w x y z
             mpu2.dmpGetQuaternion(&q, fifoBuffer2);
-            Serial.print("quat2\t");
+            /*Serial.print("quat2\t");
             Serial.print(q.w);
             Serial.print("\t");
             Serial.print(q.x);
             Serial.print("\t");
             Serial.print(q.y);
             Serial.print("\t");
-            Serial.println(q.z);
+            Serial.println(q.z);*/
         #endif
 
         #ifdef OUTPUT_READABLE_EULER
