@@ -20,6 +20,7 @@ class Receiver:
     self.commands = []
     self.executions = []
     self.transmit = []
+    self.data = []
     self.timer = 0
     self.HOST = host
     self.PORT = port
@@ -93,11 +94,10 @@ class Receiver:
           #   print("Did not execute correctly ", command)
         print("Inside execute",self.executions)
         time.sleep(5)
-        if "Balancing" not in self.executions:
-          heapq.heappush(self.executions, "Balancing")
 
   def balance(self):
-    print("Nothing")
+    if self.data[0] > 100 and "Balancing" not in self.executions:
+      heapq.heappush(self.executions, "0_Balancing")
 
   def gaitGen(self):
     print("Nothing")
@@ -126,8 +126,8 @@ class Receiver:
 
     # threading.Thread(target=self.sensorData).start()
 
-    # threading.Thread(target=self.balance).start()
-    threading.Thread(target=self.gaitGen).start()
+    threading.Thread(target=self.balance).start()
+    # threading.Thread(target=self.gaitGen).start()
     # threading.Thread(target=self.comuterVision).start()
 
 def startBoot():
