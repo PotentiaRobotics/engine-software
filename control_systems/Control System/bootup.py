@@ -124,11 +124,11 @@ class Receiver:
     threading.Thread(target=self.telemetryTransmit).start()
     threading.Thread(target=self.execute).start()
 
-    # threading.Thread(target=self.sensorData).start()
+    threading.Thread(target=self.sensorData).start()
 
     threading.Thread(target=self.balance).start()
-    # threading.Thread(target=self.gaitGen).start()
-    # threading.Thread(target=self.comuterVision).start()
+    threading.Thread(target=self.gaitGen).start()
+    threading.Thread(target=self.comuterVision).start()
 
 def startBoot():
   simulation = Receiver('10.235.1.145',12345)
