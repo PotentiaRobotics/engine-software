@@ -1,7 +1,7 @@
 """
 This class keeps track of all the motors, sensors and import variables needed for the robot.
 """
-class Propioception:
+class Registry:
     """
     Standard kwargs to give for this function
 
@@ -25,7 +25,7 @@ class Propioception:
         'left_shoulder_yaw': 0,
         'left_shoulder_roll': 0,
         'left_elbow_pitch': 0,
-        'right_shoulder_pitch': 0,
+        'right_shoulder_pit  ch': 0,
         'right_shoulder_yaw': 0,
         'right_shoulder_roll': 0,
         'right_elbow_pitch': 0,

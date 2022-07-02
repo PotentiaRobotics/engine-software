@@ -5,7 +5,7 @@
 # Updates sensor data through wifi and propiosense system
 # 1 for executing the first action in the priority queue
 
-from Propioception import *
+from Registry import Registry
 # from commands import *
 
 import re
@@ -21,6 +21,7 @@ class Receiver:
     self.executions = []
     self.transmit = []
     self.data = []
+    self.registry = Registry(IMU = None, ping = None, mode = None, jointAngles = None, position = None, velocity = None)
     self.timer = 0
     self.HOST = host
     self.PORT = port
@@ -107,6 +108,9 @@ class Receiver:
 
   def sensorData(self):
     var = ""
+    delay(100)
+
+    
     # Test
   #  print("Inside")
   #  ser = serial.Serial('/dev/ttyACM0', 115200, timeout=1)
