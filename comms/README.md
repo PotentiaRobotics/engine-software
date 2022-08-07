@@ -2,7 +2,7 @@
 
 Code for **wired** communication from Slave Arduinos to Master Arduino, and then Master Arduino to Raspberry Pi.<br/>
 
-###Code Description
+### Code Description
 
 - `RPi/` is working code for the Raspberry Pi
 	- `RPICOM.py` is the main python file that should be run on the Raspberry Pi.
@@ -16,7 +16,7 @@ Code for **wired** communication from Slave Arduinos to Master Arduino, and then
 - `Prev/` is previous code used for testing systems and debugging errors (not final code, and may be unstable)<br/>
 
 
-###Setup and Run
+### Setup and Run
 
 **Make sure you install python beforehand**
 
