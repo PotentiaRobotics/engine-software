@@ -44,7 +44,7 @@ chmod 777 /dev/ttyACM*
 
 5. Open Arduino IDE and upload `blank/blank.ino` to all Arduinos.
 
-**Do not open serial monitor until steps 6-8 are done**
+**Do not open serial monitor on any Arduino**
 
 
 6. Upload `SlaveCode/SlaveCode.ino` or `SlaveFakeCode/SlaveFakeCode.ino` to the Slave Arduinos in Arduino IDE
