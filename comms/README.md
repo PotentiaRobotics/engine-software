@@ -49,19 +49,19 @@ chmod 777 /dev/ttyACM*
 
 6. Upload `SlaveCode/SlaveCode.ino` or `SlaveFakeCode/SlaveFakeCode.ino` to the Slave Arduinos in Arduino IDE
 
-7. Upload `MasterCode/MasterCode.ino` to the Master Arduino in Arduino IDE
-
-8. `Cd` into `RPi/`
+7. `Cd` into `RPi/`
 
 ```
 cd RPi/
 ```
 
-9. Install pyserial
+8. Install pyserial
 
 ```
 pip3 install pyserial
 ```
+
+9. Upload `MasterCode/MasterCode.ino` to the Master Arduino in Arduino IDE
 
 10. Run the python code.
 
