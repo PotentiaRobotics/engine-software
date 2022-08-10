@@ -10,9 +10,9 @@ import serial
 import os
 ser = serial.Serial('/dev/ttyACM0',115200)
 
-mode = 2
+mode = 0
 #-1 = do not use offsets at all (just get and print data do nothing with it)
-#0 = start new offsets (delete offsets.txt and make/overwrite)
+#0 = start new offsets (delete offsets.txt and make/overwrite new ones)
 #1 = use offsets but do not overwrite
 #2 = use and apply existing offsets, and overwrite
 
@@ -73,6 +73,9 @@ if(mode==0):
         wfile.write("1.00 0.00 0.00 0.00\n")
         wfile.write("1.00 0.00 0.00 0.00\n")
         wfile.write("1.00 0.00 0.00 0.00\n")
+    
+    with open('offsets.txt') as rfile:
+        data = rfile.readlines()
 elif(mode==1 or mode==2):
     with open('offsets.txt') as rfile:
         data = rfile.readlines()
@@ -130,9 +133,9 @@ while True:
                 proper[3] += a4
                 
                 done = " ".join(list(map(str,proper)))
-                if(mode>=1):
+                if(mode>=0):
                     print(done)
-                    if(mode==2):
+                    if(mode==2 or mode==0):
                         data[0] = done+"\n"
                         log.write("A "+done+"\n")
             
@@ -148,9 +151,9 @@ while True:
                 proper[2] += b3
                 proper[3] += b4
                 done = " ".join(list(map(str,proper)))
-                if(mode>=1):
+                if(mode>=0):
                     print(done)
-                    if(mode==2):
+                    if(mode==2 or mode==0):
                         data[1] = done+"\n"
                         log.write("B "+done+"\n")
             
@@ -165,9 +168,9 @@ while True:
                 proper[2] += c3
                 proper[3] += c4
                 done = " ".join(list(map(str,proper)))
-                if(mode>=1):
+                if(mode>=0):
                     print(done)
-                    if(mode==2):
+                    if(mode==2 or mode==0):
                         data[2] = done+"\n"
                         log.write("C "+done+"\n")
             
@@ -183,13 +186,14 @@ while True:
                 proper[2] += d3
                 proper[3] += d4
                 done = " ".join(list(map(str,proper)))
-                if(mode>=1):
+                if(mode>=0):
                     print(done)
-                    if(mode==2):
+                    if(mode==2 or mode==0):
                         data[3] = done+"\n"
                         log.write("D "+done+"\n")
             
             except:
                 print("Under 4 numbers")
-        with open("offsets.txt", "w") as wfile:
-            wfile.writelines(data)
+        if(mode==0 or mode==2):
+            with open("offsets.txt", "w") as wfile:
+                wfile.writelines(data)
