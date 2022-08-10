@@ -2,7 +2,7 @@
 
 Code for **wired** communication from Slave Arduinos to Master Arduino, and then Master Arduino to Raspberry Pi.<br/>
 
-###Code Description
+### Code Description
 
 - `RPi/` is working code for the Raspberry Pi
 	- `RPICOM.py` is the main python file that should be run on the Raspberry Pi.
@@ -16,7 +16,7 @@ Code for **wired** communication from Slave Arduinos to Master Arduino, and then
 - `Prev/` is previous code used for testing systems and debugging errors (not final code, and may be unstable)<br/>
 
 
-###Setup and Run
+### Setup and Run
 
 **Make sure you install python beforehand**
 
@@ -44,24 +44,24 @@ chmod 777 /dev/ttyACM*
 
 5. Open Arduino IDE and upload `blank/blank.ino` to all Arduinos.
 
-**Do not open serial monitor until steps 6-8 are done**
+**Do not open serial monitor on any Arduino**
 
 
 6. Upload `SlaveCode/SlaveCode.ino` or `SlaveFakeCode/SlaveFakeCode.ino` to the Slave Arduinos in Arduino IDE
 
-7. Upload `MasterCode/MasterCode.ino` to the Master Arduino in Arduino IDE
-
-8. `Cd` into `RPi/`
+7. `Cd` into `RPi/`
 
 ```
 cd RPi/
 ```
 
-9. Install pyserial
+8. Install pyserial
 
 ```
 pip3 install pyserial
 ```
+
+9. Upload `MasterCode/MasterCode.ino` to the Master Arduino in Arduino IDE
 
 10. Run the python code.
 

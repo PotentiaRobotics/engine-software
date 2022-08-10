@@ -11,6 +11,7 @@ String incomingBytes2 = "";
 int readPls = 0;
 void setup() {
   Serial3.begin(115200);Serial2.begin(115200);Serial.begin(115200); // opens serial port, sets data rate to 9600 bps
+  delay(8000); //8 second delay to wait for RPi to run, avoids port busy error on RPi. 
 }
 
 void loop() {
