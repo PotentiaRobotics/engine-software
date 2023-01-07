@@ -14,6 +14,6 @@ while (1):
   i+=1
   send_string = ("Data\n")
   ser.write(send_string.encode('utf-8'))
-  time.sleep(0.02)
+  time.sleep(0.01)
   receive_string = ser.readline().decode('utf-8').rstrip()
   print(receive_string)
