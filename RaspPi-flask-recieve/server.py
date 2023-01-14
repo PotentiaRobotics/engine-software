@@ -7,7 +7,7 @@ import time
 ser = serial.Serial('/dev/ttyACM0', 9600, timeout=2)
 ser.flush()
 
-host = '0.0.0.0'
+host = ''
 port = 2345
 s = socket.socket()
 s.bind((host, port))
