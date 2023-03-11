@@ -15,6 +15,7 @@ void setup(){
 }
  
 void loop(){
+  
  
   if(Serial.available() > 0) {
     String data = Serial.readStringUntil('\n');
@@ -22,6 +23,9 @@ void loop(){
     Serial.print("Hi Raspberry Pi! You sent me: ");
     Serial.println(String(i));
     i+=1;}
+    else{
+      Serial.println(data);
+    }
   }
   
 }

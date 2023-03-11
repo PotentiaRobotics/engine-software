@@ -28,5 +28,5 @@ while True:
     receive_string = ser.readline().decode('utf-8').rstrip()
     print(receive_string)
 
-    conn.send(receive_string.encode())
+    conn.send(data)
     conn.close()
